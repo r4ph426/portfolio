@@ -33,7 +33,7 @@
 }
 
 @media (min-width: 721px) {
-  .work-intro .about-panel { grid-column: 5 / -1; }
+  .work-intro .about-panel { grid-column: 4 / -2; }
 }
 
 .work-index > .catalog {
@@ -179,7 +179,7 @@
 #jogo-bonito { --columns: 6 / 10; --rows: 27 / 30; }
 
 @media (min-width: 1600px) {
-  .work-intro .about-panel { grid-column: 9 / -1; }
+  .work-intro .about-panel { grid-column: 8 / -2; }
   .catalog .project-group > h2 {
     margin-inline-start: calc(var(--grid-offset) + 4 * var(--module-size));
   }
