@@ -78,7 +78,7 @@ button{min-height:44px;padding:0 12px;border:0;background:transparent;color:inhe
 a{color:inherit;text-underline-offset:.24em}
 :focus-visible{outline:2px solid var(--cobalt);outline-offset:4px}
 .work-index{padding-block:clamp(96px,13vw,184px)}
-.work-index #work-title{grid-column:1/4;font-size:22px;font-weight:400;letter-spacing:-.035em}
+.work-overview #work-title{grid-column:1/4;font-size:22px;font-weight:400;letter-spacing:-.035em}
 .work-list{grid-column:5/-1;list-style:none;padding:0}
 .work-list li,.work-list a{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
 .work-list li{border-top:1px solid #bbb;padding:14px 0;font-size:clamp(19px,2.2vw,30px)}
@@ -96,7 +96,7 @@ a{color:inherit;text-underline-offset:.24em}
 @media(max-width:640px){
   :root{--margin:24px}
   .grid{grid-template-columns:1fr;row-gap:24px}
-  .work-index #work-title,.work-list{grid-column:1/-1}
+  .work-overview #work-title,.work-list{grid-column:1/-1}
   .ribbon-art svg{aspect-ratio:360/342}
   .ribbon-controls button{padding-inline:0}
   .work-list li+li{margin-left:0}
@@ -203,15 +203,17 @@ a{color:inherit;text-underline-offset:.24em}
   width:16px;
   height:16px;
   flex:none;
-  background:currentColor;
-  mask:url("./assets/guitar.svg") center / contain no-repeat;
 }
 
-.work-index{
+.work-index,
+.case-study{
   position:relative;
   isolation:isolate;
-  container-type:inline-size;
   --module-size:12.5cqw;
+  --grid-offset:calc(var(--module-size) / 2);
+}
+.work-index{
+  container-type:inline-size;
   --panel-inset:.75px;
   --panel-padding:clamp(15px,1.65vw,30px);
   padding-block:0;
@@ -229,7 +231,8 @@ a{color:inherit;text-underline-offset:.24em}
 .work-index > .case{
   padding-block:var(--module-size);
 }
-.work-index :is(.ribbon-intro,#work-title,.case-heading){
+.work-index :is(.ribbon-intro,.case-heading),
+.work-overview > #work-title{
   --panel-gutter:calc(2 * var(--panel-inset));
   justify-self:start;
   align-self:start;
@@ -248,7 +251,7 @@ a{color:inherit;text-underline-offset:.24em}
   padding:var(--panel-padding);
   min-height:calc(3 * var(--module-size) - 2 * var(--panel-inset));
 }
-.work-index #work-title{grid-column:1/3}
+.work-overview #work-title{grid-column:1/3}
 .work-index .work-list{
   grid-column:3/-1;
   display:grid;
@@ -286,7 +289,8 @@ a{color:inherit;text-underline-offset:.24em}
 .footer-name{grid-column:4}
 .footer-agency{grid-column:7}
 .portfolio-footer .footer-agency{text-align:right}
-.work-index::before{
+.work-index::before,
+.case-study::before{
   content:"";
   position:absolute;
   inset:0;
@@ -297,18 +301,19 @@ a{color:inherit;text-underline-offset:.24em}
     linear-gradient(to right,var(--gridline) .5px,transparent .5px,transparent calc(100% - .5px),var(--gridline) calc(100% - .5px)),
     linear-gradient(to bottom,var(--gridline) .5px,transparent .5px,transparent calc(100% - .5px),var(--gridline) calc(100% - .5px));
   background-size:var(--module-size) var(--module-size);
-  background-position:calc(var(--module-size) * .5) 0,0 0;
+  background-position:var(--grid-offset) 0,0 0;
+}
+.work-index::before{
   mask-image:linear-gradient(transparent,#000 min(11vw,104px),#000 calc(100% - var(--module-size)),transparent);
 }
 @media(max-width:720px){
-  .work-index{--module-size:25cqw}
-  .work-index::before{background-position:0 0}
+  .work-index,.case-study{--module-size:25cqw;--grid-offset:0px}
   .work-index > .frame{
     grid-template-columns:repeat(4,minmax(0,1fr));
     padding-inline:0;
     row-gap:0;
   }
-  .work-index #work-title,.work-index .work-list{grid-column:1/-1}
+  .work-overview #work-title,.work-index .work-list{grid-column:1/-1}
   .footer-copyright{grid-column:2}
   .footer-name{grid-column:3}
   .footer-agency{grid-column:4}

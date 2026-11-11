@@ -827,7 +827,7 @@ if (window.AudioContext && soundToggle) {
     soundToggle.setAttribute('aria-pressed', String(soundEnabled));
     soundToggle.title = soundEnabled ? 'Turn sound off' : 'Turn sound on';
     soundToggle.querySelector('use').setAttribute('href',
-      './assets/interface-icons.svg?v=2#' + (soundEnabled ? 'speaker' : 'speaker-muted'));
+      soundEnabled ? '#speaker' : '#speaker-muted');
     if (soundEnabled) resumeAudio().catch(() => {});
     else {
       if (audioOutput) audioOutput.gain.value = 0;
@@ -856,7 +856,7 @@ reduced.addEventListener('change', () => {
 });
 
 const workIndex = document.querySelector('.work-index');
-const workPanels = workIndex?.querySelectorAll('.work-intro > .ribbon-intro, .work-overview > h2, .work-list > li, .case > *');
+const workPanels = workIndex?.querySelectorAll('.work-intro > .ribbon-intro');
 if (workPanels?.length) {
   const paper = workIndex.closest('.paper');
   const canvas = document.createElement('canvas');
