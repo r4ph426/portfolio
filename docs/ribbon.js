@@ -44,7 +44,8 @@ const loopVariant = !ribbonVariant || ribbonVariant === 'loop';
 const nameVariant = ribbonVariant === 'rapha';
 const greetingVariant = ribbonVariant === 'hi';
 const introductionVariant = ribbonVariant === 'intro';
-const letteringShape = loopVariant || nameVariant || greetingVariant || introductionVariant;
+const middleVariant = ribbonVariant === 'iam';
+const letteringShape = loopVariant || nameVariant || greetingVariant || introductionVariant || middleVariant;
 const greetingCurve = [
   'M-110 356 C40 351 134 310 250 240',
   'C349 180 428 131 391 71 C354 11 282 65 269 155',
@@ -54,7 +55,7 @@ const greetingCurve = [
   'C664 352 775 373 867 316 C952 263 1043 256 1210 306',
 ].join(' ');
 let greetingDot;
-if (loopVariant || greetingVariant || introductionVariant) {
+if (loopVariant || greetingVariant || introductionVariant || middleVariant) {
   const dot = document.createElementNS(svg.namespaceURI, 'circle');
   dot.setAttribute('cx', introductionVariant ? '205' : '610');
   dot.setAttribute('cy', introductionVariant ? '153' : '141');
@@ -107,14 +108,14 @@ const middleCurve = [
   'C217 222 223 205 225 221 C228 245 179 339 219 356',
   'C270 378 337 311 384 250',
   'C424.18 214.36 472.20 235.96 467.30 283.48 C463.38 327.76 428.10 364.48 397.72 348.28 C370.28 333.16 383.02 289.96 412.42 253.24 C443.78 226.24 487.88 243.52 477.10 274.84 C466.32 305.08 449.66 351.52 476.12 355.84 C502.58 361.24 531.00 312.64 548.64 283.48',
-  'C570 248 586 201 607 203 C635 206 616 272 612 301',
-  'C609 337 616 350 629 320 C650 270 667 198 699 198',
-  'C736 198 712 278 710 309 C707 346 718 357 733 323',
-  'C752 279 773 197 803 201 C841 206 817 282 819 321 C821 359 879 363 929 345',
+  'C584 225 631 183 669 198 C707 213 688 260 674 292',
+  'C660 324 663 338 683 317 C703 296 742 198 789 208',
+  'C836 218 807 284 813 321 C819 358 879 363 929 345',
   'C1000 319 1099 298 1200 294',
 ].join(' ');
 const letteringWidth = 52;
-const letteringStudy = new URLSearchParams(location.search).get('lettering');
+const letteringParams = new URLSearchParams(location.search);
+const letteringStudy = letteringParams.get('lettering');
 const roomier = letteringStudy === 'roomy';
 
 function spaceWord(curve) {
@@ -125,9 +126,47 @@ function spaceWord(curve) {
   });
 }
 
+// The preview redraws only the m and the start of its exit flourish.
+const middleStudies = new Map([
+  ['open', [
+    'C585 226 613 185 646 195 C682 206 663 272 650 305',
+    'C636 345 640 360 661 329 C688 290 727 196 769 201',
+    'C814 206 787 285 798 324 C811 368 879 363 929 345',
+  ]],
+  ['even', [
+    'C570 248 590 220 609 221 C638 223 615 280 605 306',
+    'C593 338 600 352 619 321 C648 274 672 198 704 198',
+    'C740 198 719 281 710 309 C698 346 704 358 727 322',
+    'C755 278 777 198 814 198 C852 198 822 282 822 322 C822 365 879 363 929 345',
+  ]],
+  ['upright', [
+    'C570 248 586 201 607 203 C635 206 616 272 612 301',
+    'C609 337 616 350 629 320 C650 270 667 198 699 198',
+    'C736 198 712 278 710 309 C707 346 718 357 733 323',
+    'C752 279 773 197 803 201 C841 206 817 282 819 321 C821 359 879 363 929 345',
+  ]],
+  ['lift', [
+    'C568 252 580 227 600 227 C625 227 610 278 603 300',
+    'C591 337 595 354 617 321 C647 275 668 204 697 200',
+    'C734 195 713 268 704 299 C691 343 702 356 726 318',
+    'C755 270 781 161 821 164 C862 167 827 268 827 312 C827 360 879 363 929 345',
+  ]],
+]);
+const requestedMiddleStudy = letteringParams.get('iam');
+const middleStudy = requestedMiddleStudy === 'original'
+  ? null
+  : middleStudies.get(requestedMiddleStudy) ?? middleStudies.get('upright');
+const middleScene = {
+  curve: spaceWord(middleStudy
+    ? middleCurve.replace(/C584 225 .*?929 345/, middleStudy.join(' '))
+    : middleCurve),
+  width: letteringWidth,
+  dot: roomier ? {x: 200, y: 102} : {x: 240, y: 135},
+};
+
 const loopScenes = [
   {curve: greetingCurve, width: letteringWidth, dot: {x: 610, y: 141}},
-  {curve: spaceWord(middleCurve), width: letteringWidth, dot: roomier ? {x: 200, y: 102} : {x: 240, y: 135}},
+  middleScene,
   {curve: spaceWord(signatureCurve), width: letteringWidth},
 ];
 let sceneIndex = 0;
@@ -618,13 +657,18 @@ function layout() {
   if (nameVariant) source = signatureCurve;
   if (greetingVariant) source = greetingCurve;
   if (introductionVariant) source = introductionCurve;
+  if (middleVariant) {
+    source = middleScene.curve;
+    greetingDot.setAttribute('cx', middleScene.dot.x);
+    greetingDot.setAttribute('cy', middleScene.dot.y);
+  }
   baseCurve = smoothJoins(source);
   pointer = null;
   shiftX = shiftY = twist = 0;
   pulse = null;
   pluck = null;
   rainbow.style.display = 'none';
-  if (nameVariant || introductionVariant || greetingVariant) track.style.strokeWidth = String(letteringWidth);
+  if (nameVariant || introductionVariant || greetingVariant || middleVariant) track.style.strokeWidth = String(letteringWidth);
   else track.style.strokeWidth = small ? '43' : '';
   if (loopVariant) {
     svg.style.opacity = '1';
@@ -818,6 +862,8 @@ layout();
 updateRibbonDissolve();
 pluckButton.hidden = false;
 if (window.AudioContext && soundToggle) {
+  const soundIcon = soundToggle.querySelector('use');
+  const soundIconUrl = new URL(soundIcon.getAttribute('href'), document.baseURI);
   soundToggle.hidden = false;
   soundToggle.addEventListener('click', () => {
     soundEnabled = !soundEnabled;
@@ -862,8 +908,6 @@ if (workIntro) {
   const transitionDuration = 3500;
   let previousScroll = window.scrollY;
   let transitionFrame = 0;
-  const soundIcon = soundToggle.querySelector('use');
-  const soundIconUrl = new URL(soundIcon.getAttribute('href'), document.baseURI);
   const scrollCue = document.querySelector('.scroll-for-more');
   const returnLink = document.querySelector('.return-to-top');
 

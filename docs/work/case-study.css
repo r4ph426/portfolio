@@ -7,19 +7,18 @@
 }
 
 .work-case-page > .portfolio-footer {
-  --module-size: 12.5cqw;
   --footer-edge: 12px;
   --footer-row: 44px;
   width: 100%;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--inner-columns), minmax(0, 1fr));
   gap: 0;
-  padding-inline: 6.25cqw;
+  padding-inline: var(--grid-offset);
 }
 
 .case-study {
   --case-inset: clamp(16px, 2.5vw, 38px);
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--inner-columns), minmax(0, 1fr));
   align-items: start;
   row-gap: var(--module-size);
   width: 100%;
@@ -88,12 +87,12 @@
 
 .case-gallery {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--inner-columns), minmax(0, 1fr));
   align-items: start;
 }
 
 .case-gallery > :first-child { grid-column: 1 / span 3; }
-.case-gallery > :nth-child(2) { grid-column: 5 / -1; }
+.case-gallery > :nth-child(2) { grid-column: -4 / -1; }
 .case-gallery > :only-child { grid-column: 1 / -1; }
 
 .case-study > .case-takeaway {
@@ -126,8 +125,15 @@
 }
 .case-study .wechselspiel-menu img { max-height: 76svh; object-fit: contain; }
 
+@media (min-width: 1600px) {
+  .case-study .case-intro { grid-column: 1 / span 12; }
+  .case-study :is(.case-reading, .case-takeaway) { grid-column: 1 / span 8; }
+  .case-gallery > :first-child { grid-column: 1 / span 7; }
+  .case-gallery > :nth-child(2) { grid-column: -8 / -1; }
+  .case-gallery > :only-child { grid-column: 1 / -1; }
+}
+
 @media (max-width: 720px) {
-  .case-study { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .case-study :is(.case-intro, .case-reading, .case-takeaway) { grid-column: 1 / -1; }
   .case-gallery { grid-template-columns: minmax(0, 1fr); row-gap: var(--module-size); }
   .case-gallery > :nth-child(n) { grid-column: 1 / -1; }

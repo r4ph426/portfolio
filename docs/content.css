@@ -127,9 +127,9 @@
 
 .work-cover > span {
   position: relative;
-  font-family: var(--case-face);
-  font-style: var(--case-style);
-  font-weight: var(--case-weight);
+  font-family: var(--sans);
+  font-style: normal;
+  font-weight: 400;
   font-size: clamp(27px, 4.6vw, 76px);
   line-height: .95;
   letter-spacing: -.045em;
@@ -209,9 +209,9 @@
 .work-case { padding-block: clamp(28px, 6vw, 92px); }
 .work-case header { max-width: 72ch; }
 .work-case h1 {
-  font-family: var(--case-face);
-  font-style: var(--case-style);
-  font-weight: var(--case-weight);
+  font-family: var(--sans);
+  font-style: normal;
+  font-weight: 400;
   font-size: clamp(38px, 7vw, 100px);
   line-height: .99;
   letter-spacing: -.05em;
@@ -234,10 +234,10 @@
 
 .wechselspiel-case .case-heading h1 {
   margin-top: 16px;
-  font-family: var(--case-face);
+  font-family: var(--sans);
   font-size: clamp(44px, 9.2vw, 132px);
-  font-weight: var(--case-weight);
-  font-style: var(--case-style);
+  font-weight: 400;
+  font-style: normal;
   letter-spacing: -.055em;
   line-height: 1;
 }

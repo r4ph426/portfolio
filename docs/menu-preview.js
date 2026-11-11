@@ -33,7 +33,7 @@ const menuOptions = ['Schnitt', 'Module', 'Kontaktbogen', 'Blaue Iris', 'Satzspi
   }
   const stylesheet = document.createElement('link');
   stylesheet.rel = 'stylesheet';
-  stylesheet.href = new URL('./menu-preview.css?v=10', scriptUrl);
+  stylesheet.href = new URL('./menu-preview.css?v=12', scriptUrl);
   document.head.append(stylesheet);
 
   const motionOptions = {paper: 'Papierstreifen', wave: 'Wiggle', type: 'Typografische Blende'};

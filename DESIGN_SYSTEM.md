@@ -10,23 +10,23 @@ Use white paper, dark ink, and cobalt. Create hierarchy through scale, grid posi
 
 | Role | First choice | Fallback | Source |
 | --- | --- | --- | --- |
-| Case study display | PP Editorial New Regular | Georgia, serif | Local preview file or installed font |
-| Reading, project labels, footer | PP Neue Montreal Regular | Switzer, Arial, sans-serif | Local preview file or installed font |
+| Display headings, reading, project labels, footer | PP Neue Montreal Regular | Switzer, Arial, sans-serif | Local preview file or installed font |
 | Navigation, CTA, index headings, tags | PP Neue Montreal Mono Book | UI monospace, monospace | Local preview file or installed font |
-| Alternate type preview | PP Eiko Medium Italic for display, Geist for sans | Georgia for display, Switzer or Arial for sans | Eiko via installed font, Geist bundled |
 
-The PP preview font files are excluded from Git. Public builds resolve to the fallback on devices without the corresponding installed font. Switzer Regular and Light and Geist are supplied in `docs/assets/`, alongside Geist Mono. Geist Mono is available as an asset. The active mono fallback currently comes from the operating system. See [font sources](docs/assets/FONT-SOURCE.txt) and [Geist OFL](docs/assets/Geist-OFL.txt).
+The PP preview font files are excluded from Git. Public builds resolve to the fallback on devices without the corresponding installed font. Switzer Regular is bundled as the sans fallback. The mono fallback comes from the operating system. See [font sources](docs/assets/FONT-SOURCE.txt).
 
 ## Type scale
 
-The sizes below follow the active CSS. Fluid values are listed as CSS expressions with their line heights.
+The homepage scale uses shared `--type-*` tokens in `docs/variants.css`. The sizes below follow the active CSS. Fluid values are listed as CSS expressions with their line heights.
 
 | Role | Family | Size | Line height |
 | --- | --- | --- | --- |
-| Case study title | Display | `clamp(38px, 7vw, 100px)` | 0.99 |
+| Case study title | Sans | `clamp(38px, 7vw, 100px)` | 0.99 |
 | Wechselspiel process title | Sans | `clamp(32px, 7vw, 96px)` | 1 |
 | Case study lead and takeaway | Sans | `clamp(17px, 2vw, 23px)` | 1.45 |
 | Case study reading | Sans | 18 px | 1.55 |
+| Menu chapter | Sans | `clamp(24px, 6vw, 90px)` | 0.98 |
+| Menu chapter number | Mono | `clamp(12px, 2vw, 24px)` | normal |
 | Work card title | Sans | `clamp(14px, 1.35vw, 20px)` | 1.2 |
 | Homepage intro and work headings | Mono | 13 px | 1.55 |
 | CTA and menu trigger | Mono | 13 px | 1.4 |
@@ -58,8 +58,8 @@ Keep grid rules faint so the text reads first. The grid blends translucent cobal
 | Header and outer frame | 1,600 px maximum width. Side padding is `clamp(24px, 6vw, 100px)`, with 24 px at 640 px and below. Header actions sit 12–40 px from the frame edges around the centered menu. |
 | Homepage work index | Seven square modules plus two half-module edge tracks. At 1,600 px and up, the index uses 15 modules plus the edge tracks. Cards may extend to either edge. |
 | Work index at 720 px and below | One card per row on the underlying seven-column grid. Captions appear below the cover. |
-| Case study | Seven square columns plus two half-module edges. The intro spans six columns, reading and takeaway span four, and single figures can span all seven. |
-| Case study at 720 px and below | Four square columns with no half-module offsets. Reading panels and figures span the full width. Gallery items stack. |
+| Case study | Uses the work index modules and half-module edges. The intro spans six columns and the reading and takeaway span four. At 1,600 px and up, those spans double. Full-width figures span all inner columns. |
+| Case study at 720 px and below | Intro, reading panels and figures span all seven inner columns. Gallery items stack. |
 
 Use the module for vertical rhythm and align reading fields and artwork to its edges. Home reading panel padding is `clamp(15px, 1.65vw, 30px)`. Case panel padding is `clamp(16px, 2.5vw, 38px)`. Use 8 px between a CTA and its icon, 4 px between work tags, and 12 px from the viewport edge for the fixed scroll control.
 
