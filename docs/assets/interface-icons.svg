@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <symbol id="x" viewBox="0 0 256 256">
+    <path d="M64 64l128 128m0-128L64 192" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="arrow-up" viewBox="0 0 256 256">
+    <path d="M128 216V40m-72 72 72-72 72 72" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="arrow-down" viewBox="0 0 256 256">
+    <use href="#arrow-up" transform="rotate(180 128 128)"/>
+  </symbol>
+  <symbol id="arrow-down-right" viewBox="0 0 256 256">
+    <path d="M56 56l144 144m-96 0h96v-96" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="speaker" viewBox="0 0 256 256">
+    <path d="M40 88h40l56-48v176l-56-48H40z M171 98a44 44 0 0 1 0 60 M193 75a76 76 0 0 1 0 106" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="speaker-muted" viewBox="0 0 256 256">
+    <path d="M40 88h40l56-48v176l-56-48H40z M40 40l176 176" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+</svg>

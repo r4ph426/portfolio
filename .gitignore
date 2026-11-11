@@ -2,3 +2,5 @@
 .env
 .env.*
 /site/
+
+/docs/assets/local-fonts/

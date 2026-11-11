@@ -1,34 +1,104 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-type="editorial">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Raphael Regli · Digital Product Design</title>
+<title>raphael regli · digital product design</title>
 <meta name="description" content="Raphael Regli, digital product design and design leadership.">
-<link rel="stylesheet" href="./variants.css">
-<script defer src="./ribbon.js"></script>
+<link rel="stylesheet" href="./variants.css?v=49">
+<script defer src="./type-preview.js?v=2"></script>
+<script defer src="./dot-studies.js?v=10"></script>
+<script defer src="./ribbon.js?v=89"></script>
+<script defer src="./menu-preview.js?v=9"></script>
 </head>
 <body class="ribbon-page">
-<header class="top grid">
-<a href="./">Raphael Regli</a><span>Digital product design</span>
+<main id="top">
+<header class="frame hero-menu">
+  <details>
+    <summary aria-label="ra.re menu">
+      <span>ra.re</span>
+      <svg class="menu-open-icon" viewBox="0 0 256 256" width="22" height="22" aria-hidden="true">
+        <path fill="currentColor" d="M224 64a8 8 0 0 1-8 8H40a8 8 0 0 1 0-16h176a8 8 0 0 1 8 8Zm-8 56H40a8 8 0 0 0 0 16h176a8 8 0 0 0 0-16Zm0 64H40a8 8 0 0 0 0 16h176a8 8 0 0 0 0-16Z"/>
+      </svg>
+      <svg class="menu-close-icon" width="22" height="22" aria-hidden="true"><use href="./assets/interface-icons.svg#x"/></svg>
+    </summary>
+    <nav aria-label="Portfolio">
+      <a href="#about">About</a>
+      <a href="#work-title">Selected work</a>
+    </nav>
+  </details>
+  <p class="site-status">work in progress</p>
 </header>
-<main>
-<section class="grid ribbon-intro" aria-labelledby="name">
-<h1 id="name">Raphael Regli</h1>
-<p>I lead teams through messy product problems and turn what we learn into digital experiences people can use with confidence.</p>
-</section>
+<div class="paper">
+<div class="ribbon-hero">
 <div class="ribbon-art" aria-hidden="true">
-<svg viewBox="0 0 1100 350" focusable="false">
-<path id="track" d="M-145 290 C70 325 240 289 283 149 C327 6 490 21 487 145 C485 251 336 247 405 162 C477 70 567 105 622 189 C710 320 830 279 886 165 C956 22 1086 89 1245 112"/>
-<g id="lettering">
-<text dy=".34em"><textPath href="#track" startOffset="172">DESIGN IN MOTION ✦</textPath></text>
-<text dy=".34em"><textPath href="#track" startOffset="482">DESIGN IN MOTION ✦</textPath></text>
-<text dy=".34em"><textPath href="#track" startOffset="792">DESIGN IN MOTION ✦</textPath></text>
-<text dy=".34em"><textPath href="#track" startOffset="1102">DESIGN IN MOTION ✦</textPath></text>
-</g>
+<svg viewBox="0 0 1100 515" preserveAspectRatio="none" focusable="false">
+<defs>
+  <linearGradient id="ribbon-dot-blue" x1="15%" y1="10%" x2="85%" y2="90%">
+    <stop offset="0%" stop-color="#79b8df"/>
+    <stop offset="53%" stop-color="#2866ca"/>
+    <stop offset="100%" stop-color="#1642b6"/>
+  </linearGradient>
+  <linearGradient id="ribbon-blue" x1="7%" y1="95%" x2="93%" y2="5%">
+    <stop offset="0%" stop-color="#101b69"/>
+    <stop offset="19%" stop-color="#1642b6"/>
+    <stop offset="35%" stop-color="#79b8df"/>
+    <stop offset="49%" stop-color="#2866ca"/>
+    <stop offset="62%" stop-color="#142583"/>
+    <stop offset="79%" stop-color="#66b3eb"/>
+    <stop offset="100%" stop-color="#1935ec"/>
+  </linearGradient>
+</defs>
+<path id="track" d="M-150 390 C115 528 541 409 466 219 C424 112 470 35 559 54 C650 73 648 180 590 232 C529 286 440 273 463 222 C487 171 615 249 606 340 C602 386 619 422 665 423 C805 425 952 350 1250 282"/>
 </svg>
 </div>
-<div class="ribbon-controls"><button type="button" hidden>Pause motion</button></div>
+<div class="ribbon-controls"><button class="pluck-button" type="button" title="Play the next note of Alle meine Entchen" aria-label="Pluck" hidden>
+  <span class="pluck-icon" aria-hidden="true"></span><span>pluck</span>
+</button>
+<button class="sound-toggle" type="button" aria-label="Sound" aria-pressed="false" title="Turn sound on" hidden>
+  <svg width="20" height="20" aria-hidden="true"><use href="./assets/interface-icons.svg?v=2#speaker-muted"/></svg>
+</button></div>
+</div>
+<section class="work-index" id="work-grid" aria-labelledby="work-title">
+  <div class="work-intro frame">
+<section class="ribbon-intro" id="about" aria-labelledby="intro-claim">
+  <div class="hero-note">
+    <p>Swiss-born, Berlin-based.</p>
+    <h1 id="intro-claim">I make complex products tangible.</h1>
+  </div>
+  <p>I lead teams through messy product problems and turn what we learn into digital experiences people can use with confidence.</p>
+</section>
+  </div>
+  <div class="grid frame work-overview">
+    <h2 id="work-title">Selected work</h2>
+    <ul class="work-list">
+      <li><a href="#wechselspiel"><span>Wechselspiel</span><span class="micro">visual identity <svg width="16" height="16" aria-hidden="true"><use href="./assets/interface-icons.svg#arrow-down-right"/></svg></span></a></li>
+      <li><span>comdirect</span><span class="micro">digital product</span></li>
+    </ul>
+  </div>
+  <article class="case grid frame" id="wechselspiel" aria-labelledby="case-title">
+    <header class="case-heading">
+      <p class="micro">visual identity</p>
+      <h2 id="case-title">Wechselspiel</h2>
+    </header>
+    <div class="case-art"><span class="micro">artwork placeholder</span></div>
+  </article>
+  <footer class="portfolio-footer frame" role="contentinfo">
+    <p class="footer-copyright">© 2026</p>
+    <p class="footer-name">raphael regli</p>
+    <p class="footer-agency">ra.re agency</p>
+  </footer>
+</section>
+</div>
 </main>
+<a class="back-to-top" href="#top" aria-label="Back to top"><svg width="22" height="22" aria-hidden="true"><use href="./assets/interface-icons.svg#arrow-up"/></svg></a>
+<footer class="type-preview frame" hidden>
+  <fieldset>
+    <legend>Preview typography</legend>
+    <label><input type="radio" name="type" value="eiko"> Eiko + Geist</label>
+    <label><input type="radio" name="type" value="editorial"> Editorial New + Neue Montreal</label>
+  </fieldset>
+  <p class="font-status" aria-live="polite"></p>
+</footer>
 </body>
 </html>
