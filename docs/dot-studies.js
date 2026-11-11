@@ -91,7 +91,7 @@ function createDotStudy(svg, track) {
     canvas.width = Math.ceil(width * ratio);
     canvas.height = Math.ceil(height * ratio);
     context.setTransform(ratio, 0, 0, ratio, 0, 0);
-    context.fillStyle = 'rgba(25,53,236,.52)';
+    context.fillStyle = 'rgba(25,57,255,.52)';
     dots = [];
     for (let y = 13.5; y < height; y += 15) {
       for (let x = 13.5; x < width; x += 15) dots.push({x, y, dx: 0, dy: 0});
@@ -112,7 +112,7 @@ function createDotStudy(svg, track) {
       sincePaint = 0;
       scrollPaintPending = scrollImpulse !== 0;
       context.clearRect(0, 0, width, height);
-      context.fillStyle = 'rgba(25,53,236,.52)';
+      context.fillStyle = 'rgba(25,57,255,.52)';
       paint(dots);
       return;
     }
@@ -185,9 +185,9 @@ function createDotStudy(svg, track) {
     }
     context.clearRect(0, 0, width, height);
     const moving = new Set(displaced);
-    context.fillStyle = 'rgba(25,53,236,.52)';
+    context.fillStyle = 'rgba(25,57,255,.52)';
     paint(dots.filter(dot => !moving.has(dot)));
-    context.fillStyle = 'rgba(25,53,236,.78)';
+    context.fillStyle = 'rgba(25,57,255,.78)';
     paint(displaced, 1.1);
   }
 

@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ra.re portfolio design system v1</title>
+<link rel="stylesheet" href="./variants.css?v=69">
+<link rel="stylesheet" href="./content.css?v=3">
+<link rel="stylesheet" href="./catalog.css?v=23">
+<link rel="stylesheet" href="./work/case-study.css?v=6">
+<style>
+  .specimen { max-width: 1120px; padding-block: 24px 72px; }
+  .specimen .work-case { padding-block: 0; }
+  .specimen-section { border-top: 1px solid #d1d4e2; margin-top: 48px; padding-top: 16px; }
+  .specimen-section > h2 { margin-bottom: 20px; color: var(--cobalt); font: 400 13px/1.55 var(--mono); }
+  .type-families {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: 24px;
+    margin: 0;
+  }
+  .type-families dd { margin: 0; }
+  .type-family-sample { margin-block: 12px; font-size: 30px; line-height: 1.15; }
+  .type-family-mono { font-family: var(--mono); }
+  .type-scale { margin: 0; }
+  .type-scale > div {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    align-items: baseline;
+    gap: 8px 24px;
+    padding-block: 16px;
+    border-top: 1px solid #d1d4e2;
+  }
+  .type-scale dd { margin: 0; overflow-wrap: anywhere; }
+  .type-menu-sample { font: var(--type-menu); letter-spacing: -.06em; }
+  .type-number-sample { font: var(--type-menu-number); }
+  .type-card-sample { font: var(--type-card-title); letter-spacing: -.035em; }
+  .type-index-sample { font: var(--type-index); }
+  .type-action-sample { font: var(--type-action); }
+  .type-footer-sample { font: var(--type-footer); }
+  .type-tag-sample { font: var(--type-tag); letter-spacing: .01em; }
+  @media (max-width: 560px) {
+    .type-scale > div { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 360px) {
+    .type-footer-sample { font-size: 11px; }
+  }
+  .specimen-actions { display: flex; flex-wrap: wrap; gap: 4px 32px; }
+  .icon-samples { display: flex; flex-wrap: wrap; gap: 12px 24px; color: var(--cobalt); }
+  .icon-samples > span { display: inline-flex; align-items: center; gap: 8px; font: 400 13px/1.4 var(--mono); }
+  .swatches { display: grid; grid-template-columns: repeat(auto-fit, minmax(132px, 1fr)); gap: 16px; }
+  .swatches figure { margin: 0; }
+  .swatch { display: block; min-height: 56px; background: var(--sample); border: 1px solid #d1d4e2; }
+  .swatches figcaption { margin-top: 8px; font: 400 13px/1.4 var(--mono); }
+  .grid-specimen { container-type: inline-size; outline: 1px solid #d1d4e2; }
+  .grid-specimen :is(.case-study, .work-index) { min-height: calc(2 * var(--module-size)); }
+  .grid-specimen .case-study { padding-block: 0; }
+  .grid-specimen .case-intro { background: #1939ff18; padding: 0; }
+  .grid-specimen .work-index::before { mask-image: none; }
+  .grid-caption { margin-block: 10px 24px; }
+</style>
+</head>
+<body>
+<main class="frame specimen">
+  <header class="work-case">
+    <p class="micro">ra.re portfolio · v1</p>
+    <h1>design system</h1>
+    <p>Live specimens from the portfolio’s shared styles.</p>
+  </header>
+
+  <section class="specimen-section" aria-labelledby="fonts-title">
+    <h2 id="fonts-title">font families</h2>
+    <dl class="type-families">
+      <div>
+        <dt>PP Neue Montreal Regular</dt>
+        <dd class="type-family-sample">selected work 0123</dd>
+        <dd class="micro">Display headings, reading text, project titles, menu and footer. Falls back to Switzer, Arial and sans-serif.</dd>
+      </div>
+      <div>
+        <dt>PP Neue Montreal Mono Book</dt>
+        <dd class="type-family-sample type-family-mono">selected work 0123</dd>
+        <dd class="micro">Homepage intro, index headings, actions and tags. Falls back to system monospace.</dd>
+      </div>
+    </dl>
+    <p class="grid-caption micro">PP faces use local preview files or installed fonts.</p>
+  </section>
+
+  <section class="specimen-section" aria-labelledby="type-title">
+    <h2 id="type-title">homepage type scale</h2>
+    <dl class="type-scale">
+      <div><dt class="micro">Menu chapter · 24–90 px / .98</dt><dd class="type-menu-sample">selected work</dd></div>
+      <div><dt class="micro">Menu number · 12–24 px / normal</dt><dd class="type-number-sample">01</dd></div>
+      <div><dt class="micro">Project title · 14–20 px / 1.2</dt><dd class="type-card-sample">wechselspiel · visual identity</dd></div>
+      <div><dt class="micro">Intro and index heading · 13 px / 1.55</dt><dd class="type-index-sample">swiss-born, berlin-based.</dd></div>
+      <div><dt class="micro">Action · 13 px / 1.4</dt><dd class="type-action-sample">say hello</dd></div>
+      <div><dt class="micro">Footer · 13 px / 1.4<br>11 px at 360 px and below</dt><dd class="type-footer-sample">raphael regli</dd></div>
+      <div><dt class="micro">Project tag · 11 px / 1.4</dt><dd class="type-tag-sample">typography</dd></div>
+    </dl>
+  </section>
+
+  <section class="specimen-section" aria-labelledby="color-title">
+    <h2 id="color-title">color</h2>
+    <div class="swatches">
+      <figure><span class="swatch" style="--sample:#fff"></span><figcaption>paper<br>#ffffff</figcaption></figure>
+      <figure><span class="swatch" style="--sample:var(--ink)"></span><figcaption>ink<br>#191919</figcaption></figure>
+      <figure><span class="swatch" style="--sample:var(--cobalt)"></span><figcaption>cobalt<br>#1939ff</figcaption></figure>
+      <figure><span class="swatch" style="--sample:#4e5570"></span><figcaption>caption ink<br>#4e5570</figcaption></figure>
+      <figure><span class="swatch" style="--sample:#f3f4f8"></span><figcaption>figure mat<br>#f3f4f8</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="specimen-section" aria-labelledby="grid-title">
+    <h2 id="grid-title">responsive grids</h2>
+    <div class="grid-specimen" aria-hidden="true">
+      <div class="frame case-study"><div class="case-intro"></div></div>
+    </div>
+    <p class="micro grid-caption">Case study · The same square modules and half-module edges as the work index. On phones, the intro and figures span all seven columns. The tinted area shows where the intro sits.</p>
+    <div class="grid-specimen" aria-hidden="true"><div class="work-index"></div></div>
+    <p class="micro grid-caption">Work index · Seven square columns with half-module edges, expanding to 15 at 1,600 px. On phones, cards stack on the seven-column grid.</p>
+  </section>
+
+  <section class="specimen-section" aria-labelledby="actions-title">
+    <h2 id="actions-title">actions</h2>
+    <div class="specimen-actions">
+      <a class="cta" href="./index.html#work-title">
+        <svg class="cta-icon" aria-hidden="true" focusable="false"><use href="./assets/interface-icons.svg?v=3#arrow-left"/></svg>
+        <span>back to work</span>
+      </a>
+      <a class="cta" href="mailto:hello@ra-re.agency">
+        <span>say hello</span>
+        <svg class="cta-icon" aria-hidden="true" focusable="false"><use href="./assets/interface-icons.svg?v=3#arrow-up-right"/></svg>
+      </a>
+      <a class="cta" href="./index.html#about">
+        <svg class="cta-icon" aria-hidden="true" focusable="false"><use href="./assets/interface-icons.svg?v=3#arrow-down"/></svg>
+        <span>scroll for more</span>
+      </a>
+    </div>
+    <div class="catalog-tags"><span class="micro">product design</span><span class="micro">design systems</span></div>
+  </section>
+  <section class="specimen-section" aria-labelledby="icons-title">
+    <h2 id="icons-title">icons · phosphor regular</h2>
+    <div class="icon-samples">
+      <span><svg class="cta-icon" aria-hidden="true"><use href="./assets/interface-icons.svg?v=3#guitar"/></svg>pluck</span>
+      <span><svg class="cta-icon" aria-hidden="true"><use href="./assets/interface-icons.svg?v=3#speaker"/></svg>sound on</span>
+      <span><svg class="cta-icon" aria-hidden="true"><use href="./assets/interface-icons.svg?v=3#speaker-muted"/></svg>sound off</span>
+      <span><svg class="cta-icon" aria-hidden="true"><use href="./assets/interface-icons.svg?v=3#arrow-up"/></svg>back to top</span>
+    </div>
+  </section>
+</main>
+</body>
+</html>

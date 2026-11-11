@@ -12,4 +12,8 @@ Push to `main`. In the repository's **Settings → Pages**, select **Deploy from
 
 The original design studies in `site/` are kept locally. Keep unpublished research, client materials, and credentials out of this repository.
 
-For the local art direction comparison, open `/?preview=1&type=eiko#wechselspiel` or `/?preview=1&type=editorial#wechselspiel`. Editorial New and Neue Montreal are the current default. The switch below the case uses the same layout and copy. PP fonts resolve from local preview files or installed system fonts and are not bundled; the preview identifies any active fallback. Geist and Geist Mono are bundled under the SIL Open Font License. The Wechselspiel section shows the beta menu and working graphics. The project cards below link to standalone case pages in `docs/work/`.
+## Portfolio design system
+
+See [Design system v1](DESIGN_SYSTEM.md) for foundations, components, and usage. Open [the live specimen](http://127.0.0.1:8000/design-system.html) while the local preview server is running.
+
+The site uses PP Neue Montreal Regular and PP Neue Montreal Mono Book. PP fonts resolve from local preview files or installed system fonts. The site falls back to Switzer and system monospace. The Wechselspiel section shows the beta menu and working graphics. The project cards below link to standalone case pages in `docs/work/`.

@@ -28,7 +28,7 @@
 .hero-menu[data-menu] nav a:is(:hover,:focus-visible,[aria-current]){color:var(--cobalt)}
 .hero-menu[data-menu] nav button{justify-self:start;margin-top:16px}
 .chapter-dot,.menu-markers{display:none}
-.chapter-number,.chapter-arrow{font:clamp(12px,2vw,24px) var(--mono);letter-spacing:0}
+.chapter-number,.chapter-arrow{font:var(--type-menu-number);letter-spacing:0}
 .hero-menu[data-menu="1"] nav{
   color:#f6f4ee;background:#191919;
   animation:menu-slice .56s cubic-bezier(.22,.8,.22,1) both
@@ -62,7 +62,7 @@
 .hero-menu[data-menu="3"] .chapter-number{display:none}
 .hero-menu[data-menu="3"] nav a::before{
   content:"";grid-column:1/-1;aspect-ratio:1;
-  background:radial-gradient(circle,#1935ec 1px,transparent 1.5px) 0 0/12px 12px,#f8f8f8;
+  background:radial-gradient(circle,#1939ff 1px,transparent 1.5px) 0 0/12px 12px,#f8f8f8;
 }
 .hero-menu[data-menu="3"] nav a:nth-child(2)::before{
   background:linear-gradient(90deg,#aaa 1px,transparent 1px),linear-gradient(#aaa 1px,transparent 1px),#fff;
@@ -78,7 +78,7 @@
   background:linear-gradient(155deg,#b8e1ff,#3667f2 37%,#09189b 68%,#84ceff);
   border-radius:49% 51% 44% 56%;transform:rotate(-22deg) skew(-16deg)
 }
-.hero-menu[data-menu="4"] nav a{font-family:var(--case-face);text-shadow:0 1px 10px #152382}
+.hero-menu[data-menu="4"] nav a{font-family:var(--sans);text-shadow:0 1px 10px #152382}
 .hero-menu[data-menu="4"] nav a:is(:hover,:focus-visible,[aria-current]){color:#fff;text-decoration:underline}
 .hero-menu:is([data-menu="2"],[data-menu="3"],[data-menu="5"]) nav{
   --menu-ease:cubic-bezier(.22,1,.36,1);
@@ -107,7 +107,7 @@
   margin:1px;
   padding:0 clamp(8px,2vw,24px);
   background:white;
-  font-size:clamp(24px,6vw,90px);
+  font:var(--type-menu);
   animation:menu-land .5s var(--menu-ease) .14s both
 }
 .hero-menu[data-menu="5"] nav a:nth-child(2){grid-column-start:2;animation-delay:.2s}

@@ -44,7 +44,8 @@ const loopVariant = !ribbonVariant || ribbonVariant === 'loop';
 const nameVariant = ribbonVariant === 'rapha';
 const greetingVariant = ribbonVariant === 'hi';
 const introductionVariant = ribbonVariant === 'intro';
-const letteringShape = loopVariant || nameVariant || greetingVariant || introductionVariant;
+const middleVariant = ribbonVariant === 'iam';
+const letteringShape = loopVariant || nameVariant || greetingVariant || introductionVariant || middleVariant;
 const greetingCurve = [
   'M-110 356 C40 351 134 310 250 240',
   'C349 180 428 131 391 71 C354 11 282 65 269 155',
@@ -54,7 +55,7 @@ const greetingCurve = [
   'C664 352 775 373 867 316 C952 263 1043 256 1210 306',
 ].join(' ');
 let greetingDot;
-if (loopVariant || greetingVariant || introductionVariant) {
+if (loopVariant || greetingVariant || introductionVariant || middleVariant) {
   const dot = document.createElementNS(svg.namespaceURI, 'circle');
   dot.setAttribute('cx', introductionVariant ? '205' : '610');
   dot.setAttribute('cy', introductionVariant ? '153' : '141');
@@ -113,7 +114,8 @@ const middleCurve = [
   'C1000 319 1099 298 1200 294',
 ].join(' ');
 const letteringWidth = 52;
-const letteringStudy = new URLSearchParams(location.search).get('lettering');
+const letteringParams = new URLSearchParams(location.search);
+const letteringStudy = letteringParams.get('lettering');
 const roomier = letteringStudy === 'roomy';
 
 function spaceWord(curve) {
@@ -124,9 +126,47 @@ function spaceWord(curve) {
   });
 }
 
+// The preview redraws only the m and the start of its exit flourish.
+const middleStudies = new Map([
+  ['open', [
+    'C585 226 613 185 646 195 C682 206 663 272 650 305',
+    'C636 345 640 360 661 329 C688 290 727 196 769 201',
+    'C814 206 787 285 798 324 C811 368 879 363 929 345',
+  ]],
+  ['even', [
+    'C570 248 590 220 609 221 C638 223 615 280 605 306',
+    'C593 338 600 352 619 321 C648 274 672 198 704 198',
+    'C740 198 719 281 710 309 C698 346 704 358 727 322',
+    'C755 278 777 198 814 198 C852 198 822 282 822 322 C822 365 879 363 929 345',
+  ]],
+  ['upright', [
+    'C570 248 586 201 607 203 C635 206 616 272 612 301',
+    'C609 337 616 350 629 320 C650 270 667 198 699 198',
+    'C736 198 712 278 710 309 C707 346 718 357 733 323',
+    'C752 279 773 197 803 201 C841 206 817 282 819 321 C821 359 879 363 929 345',
+  ]],
+  ['lift', [
+    'C568 252 580 227 600 227 C625 227 610 278 603 300',
+    'C591 337 595 354 617 321 C647 275 668 204 697 200',
+    'C734 195 713 268 704 299 C691 343 702 356 726 318',
+    'C755 270 781 161 821 164 C862 167 827 268 827 312 C827 360 879 363 929 345',
+  ]],
+]);
+const requestedMiddleStudy = letteringParams.get('iam');
+const middleStudy = requestedMiddleStudy === 'original'
+  ? null
+  : middleStudies.get(requestedMiddleStudy) ?? middleStudies.get('upright');
+const middleScene = {
+  curve: spaceWord(middleStudy
+    ? middleCurve.replace(/C584 225 .*?929 345/, middleStudy.join(' '))
+    : middleCurve),
+  width: letteringWidth,
+  dot: roomier ? {x: 200, y: 102} : {x: 240, y: 135},
+};
+
 const loopScenes = [
   {curve: greetingCurve, width: letteringWidth, dot: {x: 610, y: 141}},
-  {curve: spaceWord(middleCurve), width: letteringWidth, dot: roomier ? {x: 200, y: 102} : {x: 240, y: 135}},
+  middleScene,
   {curve: spaceWord(signatureCurve), width: letteringWidth},
 ];
 let sceneIndex = 0;
@@ -153,6 +193,7 @@ const melody = [
 let melodyIndex = 0;
 const loopChord = [60, 64, 67]; // C–E–G
 const compact = matchMedia('(max-width: 640px)');
+const nativeScroll = matchMedia('(max-width: 720px), (hover: none) and (pointer: coarse)');
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const wideCurve = track.getAttribute('d');
 const compactCurve = 'M-80 270 C3 306 172 256 101 159 C62 87 105 35 188 48 C274 61 272 133 218 167 C160 204 77 195 98 161 C121 127 241 179 233 240 C229 271 245 295 288 295 C328 298 382 230 440 204';
@@ -616,13 +657,18 @@ function layout() {
   if (nameVariant) source = signatureCurve;
   if (greetingVariant) source = greetingCurve;
   if (introductionVariant) source = introductionCurve;
+  if (middleVariant) {
+    source = middleScene.curve;
+    greetingDot.setAttribute('cx', middleScene.dot.x);
+    greetingDot.setAttribute('cy', middleScene.dot.y);
+  }
   baseCurve = smoothJoins(source);
   pointer = null;
   shiftX = shiftY = twist = 0;
   pulse = null;
   pluck = null;
   rainbow.style.display = 'none';
-  if (nameVariant || introductionVariant || greetingVariant) track.style.strokeWidth = String(letteringWidth);
+  if (nameVariant || introductionVariant || greetingVariant || middleVariant) track.style.strokeWidth = String(letteringWidth);
   else track.style.strokeWidth = small ? '43' : '';
   if (loopVariant) {
     svg.style.opacity = '1';
@@ -637,7 +683,7 @@ ribbonCloud.style.pointerEvents = 'none';
 svg.append(ribbonCloud);
 const gridCrosses = document.createElementNS(svg.namespaceURI, 'path');
 gridCrosses.setAttribute('fill', 'none');
-gridCrosses.setAttribute('stroke', '#1935ec');
+gridCrosses.setAttribute('stroke', '#1939ff');
 gridCrosses.setAttribute('stroke-linecap', 'round');
 gridCrosses.setAttribute('vector-effect', 'non-scaling-stroke');
 ribbonCloud.after(gridCrosses);
@@ -673,9 +719,9 @@ function updateRibbonDissolve() {
       stringSource = null;
     }
   }
-  const motion = reduced.matches ? 0 : progress;
+  const motion = reduced.matches || nativeScroll.matches ? 0 : progress;
   const ribbonLayers = [track, shading, rainbow, greetingDot].filter(Boolean);
-  svg.style.translate = reduced.matches ? '' : '0 ' + Math.min(scrollY, end) + 'px';
+  svg.style.translate = reduced.matches || nativeScroll.matches ? '' : '0 ' + Math.min(scrollY, end) + 'px';
   if (!motion) {
     if (dissolveProgress) {
       ribbonCloud.replaceChildren();
@@ -790,11 +836,12 @@ window.addEventListener('scroll', () => {
 }, {passive: true});
 window.addEventListener('resize', updateRibbonDissolve);
 reduced.addEventListener('change', updateRibbonDissolve);
+nativeScroll.addEventListener('change', updateRibbonDissolve);
 
 function tick(now) {
   if (previous != null) {
     const elapsed = Math.min(now - previous, 50);
-    if (!dissolveProgress) {
+    if (!dissolveProgress && !(nativeScroll.matches && heroAudioMuted)) {
       if (loopVariant && !heroAudioMuted && now >= manualPluckUntil) advanceLoop(elapsed);
       drawCurve(elapsed);
       drawRainbow(elapsed);
@@ -815,13 +862,15 @@ layout();
 updateRibbonDissolve();
 pluckButton.hidden = false;
 if (window.AudioContext && soundToggle) {
+  const soundIcon = soundToggle.querySelector('use');
+  const soundIconUrl = new URL(soundIcon.getAttribute('href'), document.baseURI);
   soundToggle.hidden = false;
   soundToggle.addEventListener('click', () => {
     soundEnabled = !soundEnabled;
     soundToggle.setAttribute('aria-pressed', String(soundEnabled));
     soundToggle.title = soundEnabled ? 'Turn sound off' : 'Turn sound on';
-    soundToggle.querySelector('use').setAttribute('href',
-      soundEnabled ? '#speaker' : '#speaker-muted');
+    soundIconUrl.hash = soundEnabled ? 'speaker' : 'speaker-muted';
+    soundIcon.setAttribute('href', soundIconUrl.href);
     if (soundEnabled) resumeAudio().catch(() => {});
     else {
       if (audioOutput) audioOutput.gain.value = 0;
@@ -906,7 +955,7 @@ if (workIntro) {
     updateScrollCue();
     const delta = position - previousScroll;
     previousScroll = position;
-    if (reduced.matches || transitionFrame || !delta) return;
+    if (nativeScroll.matches || reduced.matches || transitionFrame || !delta) return;
 
     const landing = gridLanding();
     if (position <= heroRestLimit || position >= landing - arrivalTolerance) return;
@@ -914,7 +963,7 @@ if (workIntro) {
   }, {passive: true});
 
   function handleVerticalGesture(event, deltaY) {
-    if (reduced.matches || !event.cancelable) return;
+    if (nativeScroll.matches || reduced.matches || !event.cancelable) return;
     if (transitionFrame) {
       event.preventDefault();
       return;
@@ -934,22 +983,8 @@ if (workIntro) {
     handleVerticalGesture(event, event.deltaY);
   }, {passive: false});
 
-  let touchStart;
-  window.addEventListener('touchstart', event => {
-    const touch = event.touches[0];
-    touchStart = event.touches.length === 1 ? {x: touch.clientX, y: touch.clientY} : null;
-  }, {passive: true});
-
-  window.addEventListener('touchmove', event => {
-    if (!touchStart || event.touches.length !== 1) return;
-    const touch = event.touches[0];
-    const deltaY = touchStart.y - touch.clientY;
-    if (Math.abs(deltaY) < 8 || Math.abs(deltaY) <= Math.abs(touchStart.x - touch.clientX)) return;
-    handleVerticalGesture(event, deltaY);
-  }, {passive: false});
-
   scrollCue.addEventListener('click', event => {
-    if (reduced.matches || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (nativeScroll.matches || reduced.matches || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
     startTransition(window.scrollY, gridLanding());
   });
@@ -958,6 +993,7 @@ if (workIntro) {
   window.addEventListener('pageshow', finishTransition);
   window.addEventListener('hashchange', finishTransition);
   reduced.addEventListener('change', finishTransition);
+  nativeScroll.addEventListener('change', finishTransition);
 }
 
 const workPanels = workIndex?.querySelectorAll('.work-intro > .ribbon-intro');
@@ -1007,10 +1043,11 @@ if (workPanels?.length) {
         workIndex.style.setProperty('--grid-settle', reduced.matches ? 1 : smoothRange(progress, .83, 1));
       }
       let contentReveal = 0;
+      const aboutLinked = location.hash === '#about' || location.hash === '#profile';
       for (const panel of workPanels) {
         const panelTop = panel.getBoundingClientRect().top - (parseFloat(panel.style.translate.split(' ')[1]) || 0);
         const inView = smoothRange(viewport - panelTop, viewport * .14, viewport * .36);
-        const reveal = reduced.matches ? 1 : inView * smoothRange(progress, .85, 1);
+        const reveal = reduced.matches || aboutLinked ? 1 : inView * smoothRange(progress, .85, 1);
         contentReveal = Math.max(contentReveal, reveal);
         panel.style.translate = '0 ' + (1 - reveal) * 48 + 'px';
         panel.style.opacity = String(reveal);
@@ -1061,7 +1098,7 @@ if (workPanels?.length) {
           const y = row + offsetY * (1 - ease) + (!vertical || toNode ? dy * ease : 0)
             + (gridMotion === 'wave' ? -drift * .22 : Math.sin(turn) * drift * .8);
           const gray = clamp((local - .25) / .6);
-          context.fillStyle = 'rgb(' + [25, 53, 236].map(channel =>
+          context.fillStyle = 'rgb(' + [25, 57, 255].map(channel =>
             Math.round(channel + (119 - channel) * gray)).join(' ') + ')';
           const heroFade = clamp((gridStart - row) / (viewport * .28));
           const fadeAbove = row < gridStart ? heroFade + (1 - heroFade) * ease : ease;
@@ -1107,15 +1144,35 @@ if (workPanels?.length) {
 
     let workFrame = 0;
     function scheduleWorkTransition() {
-      if (workFrame) return;
+      if (nativeScroll.matches || workFrame) return;
       workFrame = requestAnimationFrame(() => {
         workFrame = 0;
         drawWorkTransition();
       });
     }
+    function updateWorkMotionMode() {
+      if (!nativeScroll.matches) {
+        scheduleWorkTransition();
+        return;
+      }
+      cancelAnimationFrame(workFrame);
+      workFrame = 0;
+      hasLockedDots = false;
+      paper.classList.remove('is-forming-grid');
+      workIndex.style.setProperty('--grid-reveal', '100%');
+      workIndex.style.setProperty('--grid-settle', '1');
+      workIndex.style.setProperty('--grid-gray', '100%');
+      for (const panel of workPanels) {
+        panel.style.removeProperty('translate');
+        panel.style.removeProperty('opacity');
+        panel.style.removeProperty('visibility');
+      }
+    }
     window.addEventListener('scroll', scheduleWorkTransition, {passive: true});
+    window.addEventListener('hashchange', scheduleWorkTransition);
     new ResizeObserver(scheduleWorkTransition).observe(workIndex);
     reduced.addEventListener('change', scheduleWorkTransition);
-    scheduleWorkTransition();
+    nativeScroll.addEventListener('change', updateWorkMotionMode);
+    updateWorkMotionMode();
   }
 }
