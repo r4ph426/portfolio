@@ -1,0 +1,112 @@
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+}
+
+html:active-view-transition-type(project-open) {
+  --flight-out: -104vw;
+  --flight-in: 104vw;
+}
+
+html:active-view-transition-type(project-return) {
+  --flight-out: 104vw;
+  --flight-in: -104vw;
+}
+
+html:active-view-transition-type(project-open, project-return)::view-transition-group(*) {
+  animation: none;
+}
+
+html:active-view-transition-type(project-open, project-return)::view-transition-old(root) {
+  display: none;
+}
+
+html:active-view-transition-type(project-open, project-return)::view-transition-new(root) {
+  animation: none;
+}
+
+::view-transition-old(*.outgoing) {
+  animation: fly-out 300ms cubic-bezier(.5, .04, .88, .48) both;
+  animation-delay: var(--stagger, 0ms);
+}
+
+::view-transition-new(*.incoming) {
+  animation: fly-in 530ms cubic-bezier(.16, 1, .28, 1) both;
+  animation-delay: calc(90ms + var(--stagger, 0ms));
+}
+
+::view-transition-old(*.step-1), ::view-transition-new(*.step-1) { --stagger: 34ms; }
+::view-transition-old(*.step-2), ::view-transition-new(*.step-2) { --stagger: 68ms; }
+::view-transition-old(*.step-3), ::view-transition-new(*.step-3) { --stagger: 102ms; }
+
+@keyframes fly-out {
+  to { translate: var(--flight-out) 0; }
+}
+
+@keyframes fly-in {
+  from { translate: var(--flight-in) 0; }
+}
+
+/* Keep the navigation above the content snapshots throughout the flight. */
+html:active-view-transition-type(project-open, project-return) .hero-menu {
+  view-transition-name: portfolio-header;
+}
+
+::view-transition-group(portfolio-header) {
+  z-index: 1;
+}
+
+::view-transition-old(portfolio-header) {
+  display: none;
+}
+
+::view-transition-new(portfolio-header) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+.ribbon-page .hero-menu,
+.work-case-page > .hero-menu {
+  background-color: transparent;
+}
+
+/* The first case-study row is already reserved above the introduction. */
+.case-study > .case-back {
+  position: absolute;
+  grid-column: auto;
+  inset-inline-start: calc(var(--grid-offset) + var(--case-inset));
+  inset-block-start: calc(var(--module-size) / 2);
+  translate: 0 -50%;
+  z-index: 1;
+}
+
+.hero-menu > .header-contact {
+  position: fixed;
+  inset-block-start: 8px;
+  inset-inline-end: 12px;
+}
+
+.hero-menu:has(details[open]) > .header-contact {
+  visibility: visible;
+}
+
+html:active-view-transition-type(project-open, project-return) .header-contact {
+  view-transition-name: portfolio-contact;
+}
+
+::view-transition-group(portfolio-contact) {
+  z-index: 2;
+}
+
+::view-transition-old(portfolio-contact) {
+  display: none;
+}
+
+::view-transition-new(portfolio-contact) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Keep three rows between the About panel and the ribbon's scroll handoff. */
+.work-intro > .about-panel {
+  margin-block-start: calc(3 * var(--module-size));
+}

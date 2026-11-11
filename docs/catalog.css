@@ -51,7 +51,9 @@
   padding: var(--panel-padding);
   margin: 0;
   margin-inline-start: calc(var(--grid-offset) + 2 * var(--module-size));
+  border: 2px solid transparent;
   background: white;
+  background-clip: padding-box;
   scroll-margin-top: 64px;
 }
 
