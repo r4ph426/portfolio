@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>raphael regli · digital product design</title>
 <meta name="description" content="Raphael Regli, digital product design and design leadership.">
-<link rel="stylesheet" href="./variants.css?v=51">
+<link rel="stylesheet" href="./variants.css?v=58">
 <script defer src="./type-preview.js?v=2"></script>
 <script defer src="./dot-studies.js?v=10"></script>
-<script defer src="./ribbon.js?v=90"></script>
-<script defer src="./menu-preview.js?v=9"></script>
+<script defer src="./ribbon.js?v=101"></script>
+<script defer src="./menu-preview.js?v=13"></script>
+<link rel="stylesheet" href="./menu-trials.css?v=1">
 <link rel="stylesheet" href="./content.css">
-<link rel="stylesheet" href="./sticky-work.css?v=4">
-<script defer src="./sticky-work.js?v=2"></script>
+<link rel="stylesheet" href="./catalog.css?v=16">
 </head>
 <body class="ribbon-page">
 <main id="top">
@@ -20,14 +20,16 @@
   <details>
     <summary aria-label="ra.re menu">
       <span>ra.re</span>
-      <svg class="menu-open-icon" viewBox="0 0 256 256" width="22" height="22" aria-hidden="true">
-        <path fill="currentColor" d="M224 64a8 8 0 0 1-8 8H40a8 8 0 0 1 0-16h176a8 8 0 0 1 8 8Zm-8 56H40a8 8 0 0 0 0 16h176a8 8 0 0 0 0-16Zm0 64H40a8 8 0 0 0 0 16h176a8 8 0 0 0 0-16Z"/>
+      <svg class="menu-toggle-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <path d="M4 7H20"/>
+        <path d="M4 12H20"/>
+        <path d="M4 17H20"/>
       </svg>
-      <svg class="menu-close-icon" width="22" height="22" aria-hidden="true"><use href="./assets/interface-icons.svg#x"/></svg>
     </summary>
     <nav aria-label="Portfolio">
-      <a href="#about">About</a>
-      <a href="#work-title">Selected work</a>
+      <a href="#top">home</a>
+      <a href="#profile">about me</a>
+      <a href="#work-title">selected work</a>
     </nav>
   </details>
   <p class="site-status">work in progress</p>
@@ -71,31 +73,17 @@
   </div>
   <p>I lead teams through messy product problems and turn what we learn into digital experiences people can use with confidence.</p>
 </section>
+    <section class="ribbon-intro about-panel" id="profile" aria-labelledby="profile-title">
+      <div class="hero-note">
+        <h2 id="profile-title">About me</h2>
+      </div>
+      <p>My name is Rapha and I’m a design manager at Tangity. I’ve led digital product work at Volkswagen Digital:Lab and design teams at Edenspiekermann.</p>
+      <p>I like giving ideas a shape early. A sketch gets the feedback loop going, and putting ideas in front of people helps me see what holds up. I stay curious, play with type and motion, and leave room for the odd idea that turns out to be the good one.</p>
+    </section>
   </div>
-<div class="frame project-index sticky-projects" id="more-work">
+<div class="project-index catalog" id="more-work">
   <section class="project-group" aria-labelledby="work-title">
     <h2 id="work-title">selected work</h2>
-    <div class="sticky-layout">
-    <nav class="work-toc" aria-label="Project index">
-      <p class="toc-label">all projects</p>
-      <details open><summary><span data-current>all projects</span> <span class="toc-toggle" aria-hidden="true"></span></summary>
-        <ol>
-          <li><a href="#wechselspiel"><span data-title>wechselspiel</span><span class="work-tag">identity</span></a></li>
-          <li><a href="#design-daily"><span data-title>design / daily</span><span class="work-tag">editorial</span></a></li>
-          <li><a href="#deck-studio"><span data-title>deck studio</span><span class="work-tag">systems</span></a></li>
-          <li><a href="#comdirect"><span data-title>comdirect · identity</span><span class="work-tag">banking</span></a></li>
-          <li><a href="#comdirect-antragsstrecke"><span data-title>comdirect · onboarding</span><span class="work-tag">banking</span></a></li>
-          <li><a href="#comdirect-self-help"><span data-title>comdirect · service</span><span class="work-tag">banking</span></a></li>
-          <li><a href="#autoscout24"><span data-title>autoscout24</span><span class="work-tag">mobility</span></a></li>
-          <li><a href="#cariad-futures-2025-plus"><span data-title>cariad</span><span class="work-tag">foresight</span></a></li>
-          <li><a href="#licensight"><span data-title>licensight</span><span class="work-tag">identity</span></a></li>
-          <li><a href="#zulu5"><span data-title>zulu5</span><span class="work-tag">identity</span></a></li>
-          <li><a href="#telekom"><span data-title>telekom</span><span class="work-tag">b2b product</span></a></li>
-          <li><a href="#teambank"><span data-title>teambank</span><span class="work-tag">b2b product</span></a></li>
-          <li><a href="#jogo-bonito"><span data-title>jogo bonito</span><span class="work-tag">art direction</span></a></li>
-        </ol>
-      </details>
-    </nav>
     <ul class="project-grid">
       <li class="project-card" id="wechselspiel">
         <a href="work/wechselspiel.html">
@@ -104,9 +92,12 @@
             <img src="./media/wechselspiel/menu-back.png" width="340" height="980" alt="Wechselspiel beta menu back" loading="lazy">
           </div>
           <div class="project-card-caption">
-            <span class="micro">Visual identity · Typography</span>
+            <div class="catalog-tags">
+              <span class="micro">Visual identity</span>
+              <span class="micro">Typography</span>
+              <span class="micro">identity</span>
+            </div>
             <h3>Wechselspiel · Visual identity</h3>
-            <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M9 31 31 9M9 9h22v22" stroke="currentColor" stroke-width="2"/></svg></span>
             <p>Wordmark, type and colour studies explored through social graphics and a beta menu.</p>
           </div>
         </a>
@@ -115,9 +106,12 @@
         <a href="work/design-daily.html">
           <div class="work-cover cover-image"><img src="./media/design-daily/edition.jpg" alt="" loading="lazy"></div>
           <div class="project-card-caption">
-            <span class="micro">Independent product · Editorial design</span>
+            <div class="catalog-tags">
+              <span class="micro">Independent product</span>
+              <span class="micro">Editorial design</span>
+              <span class="micro">editorial</span>
+            </div>
             <h3>design / daily · An independent design journal</h3>
-            <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M9 31 31 9M9 9h22v22" stroke="currentColor" stroke-width="2"/></svg></span>
             <p>A design journal that turns signals from design and AI into sourced editorial questions and a curated toolbox.</p>
           </div>
         </a>
@@ -126,39 +120,54 @@
         <a href="work/deck-studio.html">
           <div class="work-cover review-cover review-contain"><img src="./media/deck-studio/export-example.png" alt="Exported Tangity slide from Deck Studio" loading="lazy" decoding="async"></div>
           <div class="project-card-caption">
-            <span class="micro">Internal product · Design systems</span>
+            <div class="catalog-tags">
+              <span class="micro">Internal product</span>
+              <span class="micro">Design systems</span>
+              <span class="micro">systems</span>
+            </div>
             <h3>Tangity Deck Studio · Making presentation standards usable</h3>
-            <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M9 31 31 9M9 9h22v22" stroke="currentColor" stroke-width="2"/></svg></span>
             <p>An editable presentation workflow that brings Tangity’s layout standards into the editor and carries them through to PowerPoint.</p>
           </div>
         </a>
       </li>
-      <li class="project-card project-card-text" id="comdirect">
+      <li class="project-card" id="comdirect">
         <a href="work/comdirect.html">
+          <div class="work-cover cover-sequence catalog-diagram" aria-hidden="true"><div class="cover-composition"><i></i><i></i><i></i></div></div>
           <div class="project-card-caption">
-            <span class="micro">UX/UI leadership · Digital banking</span>
+            <div class="catalog-tags">
+              <span class="micro">UX/UI leadership</span>
+              <span class="micro">Digital banking</span>
+              <span class="micro">banking</span>
+            </div>
             <h3>comdirect · Simplifying identity verification</h3>
-            <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M9 31 31 9M9 9h22v22" stroke="currentColor" stroke-width="2"/></svg></span>
             <p>A design sprint that turned a complex identity verification journey into a prototype stakeholders could review and validate.</p>
           </div>
         </a>
       </li>
-      <li class="project-card project-card-text" id="comdirect-antragsstrecke">
+      <li class="project-card" id="comdirect-antragsstrecke">
         <a href="work/comdirect-antragsstrecke.html">
+          <div class="work-cover cover-steps catalog-diagram" aria-hidden="true"><div class="cover-composition"><i></i><i></i><i></i></div></div>
           <div class="project-card-caption">
-            <span class="micro">Digital banking · Application flow</span>
+            <div class="catalog-tags">
+              <span class="micro">Digital banking</span>
+              <span class="micro">Application flow</span>
+              <span class="micro">banking</span>
+            </div>
             <h3>comdirect · Application and onboarding</h3>
-            <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M9 31 31 9M9 9h22v22" stroke="currentColor" stroke-width="2"/></svg></span>
             <p>Explored how to simplify micro and standard onboarding in the comdirect app, including the transition from desktop to mobile.</p>
           </div>
         </a>
       </li>
-      <li class="project-card project-card-text" id="comdirect-self-help">
+      <li class="project-card" id="comdirect-self-help">
         <a href="work/comdirect-self-help.html">
+          <div class="work-cover cover-query catalog-diagram" aria-hidden="true"><div class="cover-composition"><i></i><i></i><i></i></div></div>
           <div class="project-card-caption">
-            <span class="micro">Service design · Digital self-service</span>
+            <div class="catalog-tags">
+              <span class="micro">Service design</span>
+              <span class="micro">Digital self-service</span>
+              <span class="micro">banking</span>
+            </div>
             <h3>comdirect · Hilfe &amp; Service</h3>
-            <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M9 31 31 9M9 9h22v22" stroke="currentColor" stroke-width="2"/></svg></span>
             <p>Combined UX and SEO research to develop a clearer route to answers and support.</p>
           </div>
         </a>
@@ -167,9 +176,12 @@
         <a href="work/autoscout24.html">
           <div class="work-cover review-cover review-contain"><img src="./media/autoscout24/dashboard-concept.jpg" alt="Dashboard concept for the AutoScout24 Dealer Cockpit" loading="lazy" decoding="async"></div>
           <div class="project-card-caption">
-            <span class="micro">Product strategy · B2B mobility</span>
+            <div class="catalog-tags">
+              <span class="micro">Product strategy</span>
+              <span class="micro">B2B mobility</span>
+              <span class="micro">mobility</span>
+            </div>
             <h3>AutoScout24 · Future dealership tools</h3>
-            <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M9 31 31 9M9 9h22v22" stroke="currentColor" stroke-width="2"/></svg></span>
             <p>Early research and product vision for tools that could fit the daily work of car dealerships.</p>
           </div>
         </a>
@@ -178,9 +190,12 @@
         <a href="work/cariad-futures-2025-plus.html">
           <div class="work-cover review-cover review-contain"><img src="./media/cariad/elevate-ai-companion.jpg" alt="Elevate AI Companion interface concept from the CARIAD futures project" loading="lazy" decoding="async"></div>
           <div class="project-card-caption">
-            <span class="micro">Strategic foresight · Automotive UX</span>
+            <div class="catalog-tags">
+              <span class="micro">Strategic foresight</span>
+              <span class="micro">Automotive UX</span>
+              <span class="micro">foresight</span>
+            </div>
             <h3>CARIAD · Futures Report 2025+</h3>
-            <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M9 31 31 9M9 9h22v22" stroke="currentColor" stroke-width="2"/></svg></span>
             <p>An automotive futures study that translated emerging trends into scenarios, experience principles and interface concepts.</p>
           </div>
         </a>
@@ -189,9 +204,12 @@
         <a href="work/licensight.html">
           <div class="work-cover review-cover review-contain"><img src="./media/licensight/MacStudio_justDisplay.png" alt="Licensight interface shown on a display" loading="lazy" decoding="async"></div>
           <div class="project-card-caption">
-            <span class="micro">Visual identity · Product presentation</span>
+            <div class="catalog-tags">
+              <span class="micro">Visual identity</span>
+              <span class="micro">Product presentation</span>
+              <span class="micro">identity</span>
+            </div>
             <h3>Licensight · Identity and product presentation</h3>
-            <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M9 31 31 9M9 9h22v22" stroke="currentColor" stroke-width="2"/></svg></span>
             <p>A visual project spanning a wordmark, logo variants and product interface imagery.</p>
           </div>
         </a>
@@ -200,9 +218,12 @@
         <a href="work/zulu5.html">
           <div class="work-cover review-cover review-contain"><img src="./media/zulu5/responsive-landing-page.jpg" alt="Desktop and mobile layouts from the Zulu5 redesign" loading="lazy" decoding="async"></div>
           <div class="project-card-caption">
-            <span class="micro">Digital identity · Advertising technology</span>
+            <div class="catalog-tags">
+              <span class="micro">Digital identity</span>
+              <span class="micro">Advertising technology</span>
+              <span class="micro">identity</span>
+            </div>
             <h3>Zulu5 · Digital brand refresh</h3>
-            <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M9 31 31 9M9 9h22v22" stroke="currentColor" stroke-width="2"/></svg></span>
             <p>A landing page and visual language refresh that made Zulu5’s advertising intelligence and brand safety tools easier to understand.</p>
           </div>
         </a>
@@ -211,19 +232,26 @@
         <a href="work/telekom.html">
           <div class="work-cover review-cover review-contain"><img src="./media/telekom/concept-comparison.jpg" alt="Comparison of Deutsche Telekom Cloud Marketplace concepts" loading="lazy" decoding="async"></div>
           <div class="project-card-caption">
-            <span class="micro">B2B UX · Concept study</span>
+            <div class="catalog-tags">
+              <span class="micro">B2B UX</span>
+              <span class="micro">Concept study</span>
+              <span class="micro">b2b product</span>
+            </div>
             <h3>Deutsche Telekom · Cloud Marketplace concept study</h3>
-            <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M9 31 31 9M9 9h22v22" stroke="currentColor" stroke-width="2"/></svg></span>
             <p>Investigated where a B2B software marketplace could improve and built a prototype to make those opportunities tangible for discussion.</p>
           </div>
         </a>
       </li>
-      <li class="project-card project-card-text" id="teambank">
+      <li class="project-card" id="teambank">
         <a href="work/teambank.html">
+          <div class="work-cover cover-signal catalog-diagram" aria-hidden="true"><div class="cover-composition"><i></i><i></i><i></i></div></div>
           <div class="project-card-caption">
-            <span class="micro">Business development · Stakeholder engagement</span>
+            <div class="catalog-tags">
+              <span class="micro">Business development</span>
+              <span class="micro">Stakeholder engagement</span>
+              <span class="micro">b2b product</span>
+            </div>
             <h3>TeamBank · Stakeholder engagement microsites</h3>
-            <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M9 31 31 9M9 9h22v22" stroke="currentColor" stroke-width="2"/></svg></span>
             <p>Two microsites helped Tangity prepare for its first conversation with TeamBank after cold outreach and explore where the teams might work together.</p>
           </div>
         </a>
@@ -232,15 +260,17 @@
         <a href="work/jogo-bonito.html">
           <div class="work-cover review-cover review-bleed"><img src="./media/jogo-bonito/chrome-membrane.png" alt="Reflective chrome form from the Frequency Control material study" loading="lazy" decoding="async"></div>
           <div class="project-card-caption">
-            <span class="micro">Art direction · Music</span>
+            <div class="catalog-tags">
+              <span class="micro">Art direction</span>
+              <span class="micro">Music</span>
+              <span class="micro">art direction</span>
+            </div>
             <h3>Jogo Bonito · EP artwork</h3>
-            <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M9 31 31 9M9 9h22v22" stroke="currentColor" stroke-width="2"/></svg></span>
             <p>A modular cover language built from a seven-band grid, liquid forms and shifts in colour.</p>
           </div>
         </a>
       </li>
     </ul>
-    </div>
   </section>
 </div>
   <footer class="portfolio-footer frame" role="contentinfo">
@@ -251,7 +281,8 @@
 </section>
 </div>
 </main>
-<a class="back-to-top" href="#top" aria-label="Back to top"><svg width="22" height="22" viewBox="0 0 256 256" aria-hidden="true"><path d="M128 216V40m-72 72 72-72 72 72" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+<a class="back-to-top scroll-for-more" href="#about"><svg width="22" height="22" viewBox="0 0 256 256" aria-hidden="true"><use href="./assets/interface-icons.svg#arrow-down"/></svg><span>scroll for more</span></a>
+<a class="back-to-top return-to-top" href="#top" aria-label="Back to top" hidden><svg width="22" height="22" viewBox="0 0 256 256" aria-hidden="true"><path d="M128 216V40m-72 72 72-72 72 72" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 <footer class="type-preview frame" hidden>
   <fieldset>
     <legend>Preview typography</legend>

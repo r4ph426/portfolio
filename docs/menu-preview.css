@@ -186,3 +186,40 @@
   .hero-menu[data-menu-motion] nav::after,.hero-menu[data-menu-motion] nav a > span{animation:none}
   .hero-menu[data-menu-motion="wave"] nav::after{display:none}
 }
+
+/* Keep the paper layout and transition the rows from their current positions. */
+.hero-menu[data-menu-steady] > nav {
+  visibility: hidden;
+  pointer-events: none;
+  transition: visibility 0s linear 240ms;
+}
+
+.hero-menu[data-menu-steady]:has(details[open]) > nav {
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+.hero-menu[data-menu-steady] > nav a {
+  animation: none;
+  opacity: 0;
+  transform: translateY(-16px);
+  transition: opacity 170ms ease-in, transform 220ms cubic-bezier(.4, 0, .8, .6);
+}
+
+.hero-menu[data-menu-steady]:has(details[open]) > nav a {
+  opacity: 1;
+  transform: none;
+  transition: opacity 220ms ease-out,
+    transform 300ms cubic-bezier(.2, .72, .24, 1) var(--row-delay, 0ms);
+}
+
+.hero-menu[data-menu-steady] > nav a:nth-child(2) { --row-delay: 20ms; }
+.hero-menu[data-menu-steady] > nav a:nth-child(3) { --row-delay: 40ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-menu[data-menu-steady] > nav,
+  .hero-menu[data-menu-steady]:has(details[open]) > nav,
+  .hero-menu[data-menu-steady] > nav a,
+  .hero-menu[data-menu-steady]:has(details[open]) > nav a { transition: none; }
+}

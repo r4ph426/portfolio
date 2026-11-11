@@ -1,4 +1,4 @@
-const cursorVariant = new URLSearchParams(location.search).get('cursor') ?? 'flat';
+const cursorVariant = new URLSearchParams(location.search).get('cursor');
 if (cursorVariant === 'soft' || cursorVariant === 'flat') {
   document.body.dataset.cursor = cursorVariant;
 }
@@ -651,6 +651,11 @@ function ribbonScrollState(gridTop) {
   return {progress, end};
 }
 
+function smoothRange(value, start, end) {
+  const progress = Math.max(0, Math.min(1, (value - start) / (end - start)));
+  return progress * progress * (3 - 2 * progress);
+}
+
 function updateRibbonDissolve() {
   const grid = document.querySelector('.work-index');
   if (!grid) return;
@@ -690,7 +695,7 @@ function updateRibbonDissolve() {
     const length = track.getTotalLength();
     const stroke = parseFloat(getComputedStyle(track).strokeWidth) || letteringWidth;
     const fragment = document.createDocumentFragment();
-    for (let along = 0; along < length; along += 5) {
+    for (let along = 0; along < length; along += 8) {
       const center = track.getPointAtLength(along);
       const next = track.getPointAtLength(Math.min(length, along + 1));
       const angle = Math.atan2(next.y - center.y, next.x - center.x);
@@ -709,8 +714,7 @@ function updateRibbonDissolve() {
           dx: Math.cos(along * .042 + row * 2.1) * (35 + 70 * Math.abs(seed)),
           dy: Math.sin(along * .039 + row * 2.3) * (30 + 95 * Math.abs(seed)),
           delay: .27 * Math.abs(seed),
-          cloudAngle: along * 2.399963 + row * 1.73,
-          cloudRadius: .20 + .80 * Math.abs(Math.sin(along * .731 + row * 4.37))
+          phase: along * 2.399963 + row * 1.73
         });
       }
     }
@@ -718,8 +722,6 @@ function updateRibbonDissolve() {
 
   }
 
-  const burstProgress = Math.min(1, motion / .46);
-  const alignment = Math.max(0, Math.min(1, (motion - .44) / .22));
   const matrix = svg.getScreenCTM();
   if (!matrix) return;
   const gridStyle = getComputedStyle(grid, '::before');
@@ -728,18 +730,18 @@ function updateRibbonDissolve() {
   const right = left + Math.floor((gridRect.right - left + .01) / cell) * cell;
   const gridY = gridRect.top;
   const snap = (value, origin) => origin + Math.round((value - origin) / cell) * cell;
-  const dissolve = Math.min(1, burstProgress / .27);
-  const ink = 1 - dissolve * dissolve * (3 - 2 * dissolve);
+  // Use the grid's position at the end of the dissolve to choose a stable row.
+  const landingGridY = gridY + scrollY - end;
+  const ink = 1 - smoothRange(motion, .015, .25);
   for (const layer of ribbonLayers) {
     layer.style.opacity = ink;
     layer.style.visibility = ink ? '' : 'hidden';
   }
   ribbonCloud.style.visibility = motion === 1 ? 'hidden' : '';
-  const crossProgress = Math.max(0, Math.min(1, (motion - .71) / .25));
-  const crossEase = crossProgress * crossProgress * (3 - 2 * crossProgress);
+  const crossEase = smoothRange(motion, .68, .98);
   const arm = cell / 2 * crossEase;
   const marks = [];
-  if (motion > .59 && motion < 1 && cell > 0) {
+  if (motion > .68 && motion < 1 && cell > 0) {
     const firstY = gridY + Math.max(0, Math.floor(-gridY / cell)) * cell;
     for (let y = firstY; y <= innerHeight + cell; y += cell) {
       for (let x = left; x <= right + .01; x += cell) {
@@ -751,38 +753,30 @@ function updateRibbonDissolve() {
     }
   }
   gridCrosses.setAttribute('d', marks.join(' '));
-  gridCrosses.setAttribute('stroke-width', 5 - 4 * Math.min(1, crossProgress * 3));
-  gridCrosses.setAttribute('opacity', (.42 - .22 * crossProgress) * Math.min(1, Math.max(0, (motion - .59) / .08)) * (1 - Math.max(0, (motion - .96) / .04)));
+  gridCrosses.setAttribute('stroke-width', 2.6 - 1.6 * crossEase);
+  gridCrosses.setAttribute('opacity', .25 * smoothRange(motion, .68, .87) *
+    (1 - smoothRange(motion, .84, 1)));
   if (motion === 1) return;
-  for (const {dot, radius: particleRadius, x, y, dx, dy, delay, cloudAngle, cloudRadius} of cloudParticles) {
-    const release = .24 + delay * .65;
-    const travel = Math.max(0, (burstProgress - release) / (1 - release));
-    const burst = travel * travel * (3 - 2 * travel);
-    dot.setAttribute('r', particleRadius * (1 + 1.45 * (1 - Math.sqrt(travel))));
-    const px = x + dx * burst;
-    const py = y + dy * burst;
-    const screenX = px * matrix.a + matrix.e;
-    const screenY = py * matrix.d + matrix.f;
-    // Stagger assignment near cell boundaries, then gather by radial distance.
-    const targetX = Math.min(right, Math.max(left,
-      snap(screenX + Math.cos(cloudAngle) * cell * .18, left)));
-    const targetY = Math.max(gridY, snap(screenY + Math.sin(cloudAngle) * cell * .18, gridY));
-    const dxToNode = screenX - targetX;
-    const dyToNode = screenY - targetY;
-    const distanceToNode = Math.hypot(dxToNode, dyToNode);
-    const rounded = 1 - (1 - alignment) ** 3;
-    const contraction = Math.max(0, Math.min(1, (motion - .57) / .09));
-    const radius = cell * .32;
-    const radialScale = distanceToNode ? radius * Math.tanh(distanceToNode / radius) / distanceToNode : 1;
-    const contour = 1 + .16 * Math.sin(cloudAngle * 3 + Math.round((targetX - left) / cell));
-    const scatter = radius * cloudRadius * contour;
-    const cloudX = (dxToNode * radialScale * .38 + Math.cos(cloudAngle) * scatter) * (1 - contraction);
-    const cloudY = (dyToNode * radialScale * .38 + Math.sin(cloudAngle) * scatter) * (1 - contraction);
-    dot.setAttribute('cx', px + (cloudX - dxToNode) * rounded / matrix.a);
-    dot.setAttribute('cy', py + (cloudY - dyToNode) * rounded / matrix.d);
-    const merge = Math.min(1, Math.max(0, (motion - .60) / .09));
-    dot.setAttribute('opacity', (1 - ink) * (1 - merge));
 
+  for (const {dot, radius, x, y, dx, dy, delay, phase} of cloudParticles) {
+    const drift = smoothRange(motion, .06 + delay * .35, .47 + delay * .20);
+    const gather = smoothRange(motion, .25 + delay * .45, .83 + delay * .40);
+    const px = x + dx * drift;
+    const py = y + dy * drift;
+    const targetX = Math.min(right, Math.max(left,
+      snap((x + dx) * matrix.a + matrix.e + Math.cos(phase) * cell * .18, left)));
+    const targetRow = Math.max(0, Math.round(
+      ((y + dy) * matrix.d + matrix.f + Math.sin(phase) * cell * .18 - landingGridY) / cell));
+    const targetY = gridY + targetRow * cell;
+
+    // Let each particle arc toward its intersection while the grid moves into view.
+    const arc = 4 * gather * (1 - gather) * cell * .21;
+    dot.setAttribute('cx', px + ((targetX - matrix.e) / matrix.a - px) * gather +
+      Math.cos(phase) * arc / matrix.a);
+    dot.setAttribute('cy', py + ((targetY - matrix.f) / matrix.d - py) * gather +
+      Math.sin(phase) * arc / matrix.d);
+    dot.setAttribute('r', radius * (1.65 - .65 * drift));
+    dot.setAttribute('opacity', (1 - ink) * (1 - smoothRange(motion, .76 + delay * .34, .99)));
   }
 }
 
@@ -856,6 +850,116 @@ reduced.addEventListener('change', () => {
 });
 
 const workIndex = document.querySelector('.work-index');
+const workIntro = workIndex?.querySelector('.work-intro');
+
+if (workIntro) {
+  const heroRestLimit = 12;
+  const gridLandingInset = 96;
+  const arrivalTolerance = 2;
+  const transitionDuration = 3500;
+  let previousScroll = window.scrollY;
+  let transitionFrame = 0;
+  const scrollCue = document.querySelector('.scroll-for-more');
+  const returnLink = document.querySelector('.return-to-top');
+
+  function updateScrollCue() {
+    const atTop = window.scrollY <= 1;
+    scrollCue.hidden = !atTop;
+    returnLink.hidden = atTop;
+  }
+
+  function gridLanding() {
+    const introPadding = parseFloat(getComputedStyle(workIntro).paddingTop);
+    return Math.round(window.scrollY + workIntro.getBoundingClientRect().top + introPadding - gridLandingInset);
+  }
+
+  function finishTransition() {
+    cancelAnimationFrame(transitionFrame);
+    transitionFrame = 0;
+    previousScroll = window.scrollY;
+  }
+
+  function forwardEase(progress) {
+    const smoothStep = progress * progress * (3 - 2 * progress);
+    const easeOut = progress * (2 - progress);
+    return .75 * smoothStep + .25 * easeOut;
+  }
+
+  function startTransition(from, to) {
+    if (transitionFrame) return;
+    const start = performance.now();
+    const returning = to < from;
+
+    function step(now) {
+      const progress = Math.min(1, Math.max(0, (now - start) / transitionDuration));
+      const eased = returning ? 1 - forwardEase(1 - progress) : forwardEase(progress);
+      window.scrollTo({top: from + (to - from) * eased, behavior: 'instant'});
+      if (progress < 1) transitionFrame = requestAnimationFrame(step);
+      else finishTransition();
+    }
+
+    transitionFrame = requestAnimationFrame(step);
+  }
+
+  window.addEventListener('scroll', () => {
+    const position = window.scrollY;
+    updateScrollCue();
+    const delta = position - previousScroll;
+    previousScroll = position;
+    if (reduced.matches || transitionFrame || !delta) return;
+
+    const landing = gridLanding();
+    if (position <= heroRestLimit || position >= landing - arrivalTolerance) return;
+    startTransition(position, delta > 0 ? landing : 0);
+  }, {passive: true});
+
+  function handleVerticalGesture(event, deltaY) {
+    if (reduced.matches || !event.cancelable) return;
+    if (transitionFrame) {
+      event.preventDefault();
+      return;
+    }
+
+    const position = window.scrollY;
+    const landing = gridLanding();
+    // Take over at the landing before the browser starts its own reverse scroll.
+    if (deltaY < 0 && Math.abs(position - landing) <= arrivalTolerance) {
+      event.preventDefault();
+      startTransition(position, 0);
+    }
+  }
+
+  window.addEventListener('wheel', event => {
+    if (event.ctrlKey || Math.abs(event.deltaX) >= Math.abs(event.deltaY)) return;
+    handleVerticalGesture(event, event.deltaY);
+  }, {passive: false});
+
+  let touchStart;
+  window.addEventListener('touchstart', event => {
+    const touch = event.touches[0];
+    touchStart = event.touches.length === 1 ? {x: touch.clientX, y: touch.clientY} : null;
+  }, {passive: true});
+
+  window.addEventListener('touchmove', event => {
+    if (!touchStart || event.touches.length !== 1) return;
+    const touch = event.touches[0];
+    const deltaY = touchStart.y - touch.clientY;
+    if (Math.abs(deltaY) < 8 || Math.abs(deltaY) <= Math.abs(touchStart.x - touch.clientX)) return;
+    handleVerticalGesture(event, deltaY);
+  }, {passive: false});
+
+  scrollCue.addEventListener('click', event => {
+    if (reduced.matches || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    startTransition(window.scrollY, gridLanding());
+  });
+  window.addEventListener('pageshow', updateScrollCue);
+  updateScrollCue();
+  window.addEventListener('pageshow', finishTransition);
+  window.addEventListener('hashchange', finishTransition);
+  reduced.addEventListener('change', finishTransition);
+}
+
 const workPanels = workIndex?.querySelectorAll('.work-intro > .ribbon-intro');
 if (workPanels?.length) {
   const paper = workIndex.closest('.paper');
@@ -899,15 +1003,14 @@ if (workPanels?.length) {
       const settle = clamp((progress - .94) / .06);
       workIndex.style.setProperty('--grid-settle', reduced.matches || quietGrid ? 1 : settle);
       if (quietGrid) {
-        workIndex.style.setProperty('--grid-reveal', reduced.matches || progress === 1
-          ? '100%' : '0px');
-        workIndex.style.setProperty('--grid-settle', reduced.matches ? 1 : clamp((progress - .96) / .04));
-        if (progress > .96) workIndex.style.setProperty('--grid-reveal', '100%');
+        workIndex.style.setProperty('--grid-reveal', '100%');
+        workIndex.style.setProperty('--grid-settle', reduced.matches ? 1 : smoothRange(progress, .83, 1));
       }
       let contentReveal = 0;
       for (const panel of workPanels) {
         const panelTop = panel.getBoundingClientRect().top - (parseFloat(panel.style.translate.split(' ')[1]) || 0);
-        const reveal = reduced.matches ? 1 : progress < 1 ? 0 : clamp((viewport * .86 - panelTop) / (viewport * .22));
+        const inView = smoothRange(viewport - panelTop, viewport * .14, viewport * .36);
+        const reveal = reduced.matches ? 1 : inView * smoothRange(progress, .85, 1);
         contentReveal = Math.max(contentReveal, reveal);
         panel.style.translate = '0 ' + (1 - reveal) * 48 + 'px';
         panel.style.opacity = String(reveal);
@@ -924,10 +1027,10 @@ if (workPanels?.length) {
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
       context.clearRect(0, 0, width, height);
 
-      const mobileGrid = width <= 720;
-      const moduleSize = width / (mobileGrid ? 4 : 8);
+      const gridStyle = getComputedStyle(workIndex, '::before');
+      const moduleSize = parseFloat(gridStyle.backgroundSize);
       const gridStart = gridTop - top;
-      const verticalOffset = mobileGrid ? 0 : moduleSize / 2;
+      const verticalOffset = parseFloat(gridStyle.backgroundPositionX) || 0;
       const align = (position, offset) => Math.round((position - offset) / moduleSize) * moduleSize + offset;
       const firstRow = ((lockedPaperTop + 13.5 - top) % 15 + 15) % 15;
       const margin = moduleSize + 90;

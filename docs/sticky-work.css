@@ -1,5 +1,5 @@
 .work-index > .sticky-projects {
-  padding-block: var(--module-size);
+  padding-block: 0 var(--module-size);
 }
 
 .sticky-projects .project-group {

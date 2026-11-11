@@ -1,14 +1,39 @@
 const menuOptions = ['Schnitt', 'Module', 'Kontaktbogen', 'Blaue Iris', 'Satzspiegel'];
 
-{
+(() => {
+  const scriptUrl = document.currentScript.src;
   const requestedMenu = new URLSearchParams(location.search).get('menu');
   const header = document.querySelector('.hero-menu');
   const details = header.querySelector('details');
   const summary = details.querySelector('summary');
   const nav = details.querySelector('nav');
+  const links = [...nav.querySelectorAll('a')];
+  const chapters = links.map(link => link.pathname === location.pathname
+    ? document.getElementById(link.hash.slice(1))
+    : null);
+
+  function updateChapter() {
+    const active = chapters.some(Boolean)
+      ? Math.max(0, chapters.findLastIndex(chapter => chapter && chapter.getBoundingClientRect().top <= 120))
+      : -1;
+    links.forEach((link, index) => {
+      if (index === active) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+    header.dataset.chapter = active;
+  }
+
+  const trial = new URLSearchParams(location.search).get('menuTrial');
+  if (trial === 'fade' || trial === 'unfold') {
+    header.dataset.menuTrial = trial;
+    bindMenuPanel(header, details, summary, nav);
+    window.addEventListener('scroll', updateChapter, {passive: true});
+    updateChapter();
+    return;
+  }
   const stylesheet = document.createElement('link');
   stylesheet.rel = 'stylesheet';
-  stylesheet.href = './menu-preview.css?v=8';
+  stylesheet.href = new URL('./menu-preview.css?v=9', scriptUrl);
   document.head.append(stylesheet);
 
   const motionOptions = {paper: 'Papierstreifen', wave: 'Wiggle', type: 'Typografische Blende'};
@@ -34,23 +59,14 @@ const menuOptions = ['Schnitt', 'Module', 'Kontaktbogen', 'Blaue Iris', 'Satzspi
     document.body.append(picker);
   }
 
-  const chapters = [
-    ['top', 'intro'],
-    ['work-title', 'selected work'],
-    ['wechselspiel', 'wechselspiel']
-  ];
-
-  const links = chapters.map(([id, title], index) => {
-    const link = document.createElement('a');
-    link.href = '#' + id;
+  const iconUrl = new URL('./assets/interface-icons.svg', scriptUrl);
+  links.forEach((link, index) => {
+    const label = document.createElement('span');
+    label.textContent = link.textContent;
     link.innerHTML = '<span class="chapter-number" aria-hidden="true">0' + (index + 1) +
-      '</span><span class="chapter-dot" aria-hidden="true"></span><span>' + title +
-      '</span><span class="chapter-arrow" aria-hidden="true"><svg width="22" height="22"><use href="./assets/interface-icons.svg#arrow-' + (index ? 'down' : 'up') + '"/></svg></span>';
-    return link;
-  });
-  nav.prepend(...links);
-  nav.querySelectorAll('a').forEach(link => {
-    if (!links.includes(link)) link.remove();
+      '</span><span class="chapter-dot" aria-hidden="true"></span>' +
+      '<span class="chapter-arrow" aria-hidden="true"><svg width="22" height="22"><use href="' + iconUrl + '#arrow-' + (index ? 'down' : 'up') + '"/></svg></span>';
+    link.lastElementChild.before(label);
   });
 
   const picker = document.createElement('div');
@@ -69,18 +85,17 @@ const menuOptions = ['Schnitt', 'Module', 'Kontaktbogen', 'Blaue Iris', 'Satzspi
   markers.innerHTML = '<i></i><i></i><i></i>';
   summary.prepend(markers);
 
-  function updateChapter() {
-    const active = chapters.findLastIndex(([id]) => document.getElementById(id).getBoundingClientRect().top <= 120);
-    links.forEach((link, index) => {
-      if (index === Math.max(0, active)) link.setAttribute('aria-current', 'location');
-      else link.removeAttribute('aria-current');
-    });
-    header.dataset.chapter = Math.max(0, active);
-  }
-
   select.value = requestedMenu;
   if (!select.value) select.value = '5';
   header.dataset.menu = select.value;
+  if (requestedMenu === null && motion === null) {
+    header.setAttribute('data-menu-steady', '');
+    bindMenuPanel(header, details, summary, nav);
+    window.addEventListener('scroll', updateChapter, {passive: true});
+    window.addEventListener('resize', updateMenuWidth);
+    updateMenuWidth();
+    return;
+  }
   select.addEventListener('change', () => {
     exitAnimation?.cancel();
     header.dataset.menu = select.value;
@@ -160,4 +175,33 @@ const menuOptions = ['Schnitt', 'Module', 'Kontaktbogen', 'Blaue Iris', 'Satzspi
   }
   window.addEventListener('resize', updateMenuWidth);
   updateMenuWidth();
+})();
+
+function bindMenuPanel(header, details, summary, nav) {
+  nav.id = 'portfolio-menu-panel';
+  summary.setAttribute('aria-controls', nav.id);
+  details.after(nav);
+
+  function updateOpenState() {
+    nav.inert = !details.open;
+  }
+
+  function closeMenu(restoreFocus = false) {
+    if (!details.open) return;
+    details.open = false;
+    updateOpenState();
+    if (restoreFocus) summary.focus({preventScroll: true});
+  }
+
+  details.addEventListener('toggle', updateOpenState);
+  nav.addEventListener('click', event => {
+    if (event.target.closest('a')) closeMenu(true);
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeMenu(true);
+  });
+  document.addEventListener('click', event => {
+    if (!header.contains(event.target)) closeMenu(nav.contains(document.activeElement));
+  });
+  updateOpenState();
 }

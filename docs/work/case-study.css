@@ -1,5 +1,30 @@
 .work-case-page { container-type: inline-size; }
 
+.work-case-page > .hero-menu { background: white; }
+
+.hero-menu .case-back {
+  position: absolute;
+  inset-inline-start: clamp(12px, 3vw, 40px);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.hero-menu .case-back:hover { text-decoration: underline; }
+
+.work-case-page > .portfolio-footer {
+  --module-size: 12.5cqw;
+  --footer-edge: 12px;
+  --footer-row: 44px;
+  width: 100%;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0;
+  padding-inline: 6.25cqw;
+}
+
 .case-study {
   --case-inset: clamp(16px, 2.5vw, 38px);
   display: grid;
@@ -13,7 +38,7 @@
 
 .case-study > * { grid-column: 1 / -1; }
 
-.case-study :is(.case-intro, .case-reading, .case-takeaway, .case-end, .wechselspiel-process) {
+.case-study :is(.case-intro, .case-reading, .case-takeaway, .wechselspiel-process) {
   width: auto;
   max-width: none;
   padding: var(--case-inset);
@@ -85,7 +110,6 @@
   line-height: 1.45;
 }
 
-.case-end { color: var(--cobalt); }
 
 .case-study .wechselspiel-menu {
   min-height: var(--module-size);

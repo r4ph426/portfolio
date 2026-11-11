@@ -206,7 +206,6 @@
 .cover-wordmark i:nth-child(n + 2) { display: none; }
 
 .work-case-page { text-transform: lowercase; }
-.case-nav { padding-block: 26px; color: var(--cobalt); }
 .work-case { padding-block: clamp(28px, 6vw, 92px); }
 .work-case header { max-width: 72ch; }
 .work-case h1 {
