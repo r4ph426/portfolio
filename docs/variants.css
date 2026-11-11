@@ -35,7 +35,7 @@ h1,h2,h3,p,ul{margin:0}
   z-index:-1;pointer-events:none;
   mask-image:linear-gradient(#000,rgba(0,0,0,.42) 66%,transparent);
 }
-.ribbon-art svg{touch-action:pan-y;user-select:none}
+.ribbon-art svg{touch-action:pan-y pinch-zoom;user-select:none}
 @media(prefers-reduced-motion:no-preference){
   #track{
     cursor:url("./assets/wand-cursor.svg?v=2") 10 10,crosshair;
@@ -173,10 +173,6 @@ a{color:inherit;text-underline-offset:.24em}
   border:1px solid #dedede;
 }
 .hero-menu nav a{display:block;padding:10px 4px}
-
-@media(prefers-reduced-motion:no-preference){
-  #track{touch-action:none}
-}
 
 .paper{
   margin-top:-60px;
@@ -412,5 +408,9 @@ a{color:inherit;text-underline-offset:.24em}
 .sound-toggle[aria-pressed="true"]{color:var(--cobalt)}
 
 @media(prefers-reduced-motion:reduce){
+  .ribbon-hero{margin-bottom:0}
+}
+
+@media (max-width: 720px), (hover: none) and (pointer: coarse){
   .ribbon-hero{margin-bottom:0}
 }

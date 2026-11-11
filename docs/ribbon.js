@@ -154,6 +154,7 @@ const melody = [
 let melodyIndex = 0;
 const loopChord = [60, 64, 67]; // C–E–G
 const compact = matchMedia('(max-width: 640px)');
+const nativeScroll = matchMedia('(max-width: 720px), (hover: none) and (pointer: coarse)');
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const wideCurve = track.getAttribute('d');
 const compactCurve = 'M-80 270 C3 306 172 256 101 159 C62 87 105 35 188 48 C274 61 272 133 218 167 C160 204 77 195 98 161 C121 127 241 179 233 240 C229 271 245 295 288 295 C328 298 382 230 440 204';
@@ -674,9 +675,9 @@ function updateRibbonDissolve() {
       stringSource = null;
     }
   }
-  const motion = reduced.matches ? 0 : progress;
+  const motion = reduced.matches || nativeScroll.matches ? 0 : progress;
   const ribbonLayers = [track, shading, rainbow, greetingDot].filter(Boolean);
-  svg.style.translate = reduced.matches ? '' : '0 ' + Math.min(scrollY, end) + 'px';
+  svg.style.translate = reduced.matches || nativeScroll.matches ? '' : '0 ' + Math.min(scrollY, end) + 'px';
   if (!motion) {
     if (dissolveProgress) {
       ribbonCloud.replaceChildren();
@@ -791,11 +792,12 @@ window.addEventListener('scroll', () => {
 }, {passive: true});
 window.addEventListener('resize', updateRibbonDissolve);
 reduced.addEventListener('change', updateRibbonDissolve);
+nativeScroll.addEventListener('change', updateRibbonDissolve);
 
 function tick(now) {
   if (previous != null) {
     const elapsed = Math.min(now - previous, 50);
-    if (!dissolveProgress) {
+    if (!dissolveProgress && !(nativeScroll.matches && heroAudioMuted)) {
       if (loopVariant && !heroAudioMuted && now >= manualPluckUntil) advanceLoop(elapsed);
       drawCurve(elapsed);
       drawRainbow(elapsed);
@@ -907,7 +909,7 @@ if (workIntro) {
     updateScrollCue();
     const delta = position - previousScroll;
     previousScroll = position;
-    if (reduced.matches || transitionFrame || !delta) return;
+    if (nativeScroll.matches || reduced.matches || transitionFrame || !delta) return;
 
     const landing = gridLanding();
     if (position <= heroRestLimit || position >= landing - arrivalTolerance) return;
@@ -915,7 +917,7 @@ if (workIntro) {
   }, {passive: true});
 
   function handleVerticalGesture(event, deltaY) {
-    if (reduced.matches || !event.cancelable) return;
+    if (nativeScroll.matches || reduced.matches || !event.cancelable) return;
     if (transitionFrame) {
       event.preventDefault();
       return;
@@ -935,22 +937,8 @@ if (workIntro) {
     handleVerticalGesture(event, event.deltaY);
   }, {passive: false});
 
-  let touchStart;
-  window.addEventListener('touchstart', event => {
-    const touch = event.touches[0];
-    touchStart = event.touches.length === 1 ? {x: touch.clientX, y: touch.clientY} : null;
-  }, {passive: true});
-
-  window.addEventListener('touchmove', event => {
-    if (!touchStart || event.touches.length !== 1) return;
-    const touch = event.touches[0];
-    const deltaY = touchStart.y - touch.clientY;
-    if (Math.abs(deltaY) < 8 || Math.abs(deltaY) <= Math.abs(touchStart.x - touch.clientX)) return;
-    handleVerticalGesture(event, deltaY);
-  }, {passive: false});
-
   scrollCue.addEventListener('click', event => {
-    if (reduced.matches || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (nativeScroll.matches || reduced.matches || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
     startTransition(window.scrollY, gridLanding());
   });
@@ -959,6 +947,7 @@ if (workIntro) {
   window.addEventListener('pageshow', finishTransition);
   window.addEventListener('hashchange', finishTransition);
   reduced.addEventListener('change', finishTransition);
+  nativeScroll.addEventListener('change', finishTransition);
 }
 
 const workPanels = workIndex?.querySelectorAll('.work-intro > .ribbon-intro');
@@ -1108,15 +1097,34 @@ if (workPanels?.length) {
 
     let workFrame = 0;
     function scheduleWorkTransition() {
-      if (workFrame) return;
+      if (nativeScroll.matches || workFrame) return;
       workFrame = requestAnimationFrame(() => {
         workFrame = 0;
         drawWorkTransition();
       });
     }
+    function updateWorkMotionMode() {
+      if (!nativeScroll.matches) {
+        scheduleWorkTransition();
+        return;
+      }
+      cancelAnimationFrame(workFrame);
+      workFrame = 0;
+      hasLockedDots = false;
+      paper.classList.remove('is-forming-grid');
+      workIndex.style.setProperty('--grid-reveal', '100%');
+      workIndex.style.setProperty('--grid-settle', '1');
+      workIndex.style.setProperty('--grid-gray', '100%');
+      for (const panel of workPanels) {
+        panel.style.removeProperty('translate');
+        panel.style.removeProperty('opacity');
+        panel.style.removeProperty('visibility');
+      }
+    }
     window.addEventListener('scroll', scheduleWorkTransition, {passive: true});
     new ResizeObserver(scheduleWorkTransition).observe(workIndex);
     reduced.addEventListener('change', scheduleWorkTransition);
-    scheduleWorkTransition();
+    nativeScroll.addEventListener('change', updateWorkMotionMode);
+    updateWorkMotionMode();
   }
 }
