@@ -33,7 +33,7 @@ const menuOptions = ['Schnitt', 'Module', 'Kontaktbogen', 'Blaue Iris', 'Satzspi
   }
   const stylesheet = document.createElement('link');
   stylesheet.rel = 'stylesheet';
-  stylesheet.href = new URL('./menu-preview.css?v=9', scriptUrl);
+  stylesheet.href = new URL('./menu-preview.css?v=10', scriptUrl);
   document.head.append(stylesheet);
 
   const motionOptions = {paper: 'Papierstreifen', wave: 'Wiggle', type: 'Typografische Blende'};
@@ -59,7 +59,7 @@ const menuOptions = ['Schnitt', 'Module', 'Kontaktbogen', 'Blaue Iris', 'Satzspi
     document.body.append(picker);
   }
 
-  const iconUrl = new URL('./assets/interface-icons.svg', scriptUrl);
+  const iconUrl = new URL('./assets/interface-icons.svg?v=3', scriptUrl);
   links.forEach((link, index) => {
     const label = document.createElement('span');
     label.textContent = link.textContent;

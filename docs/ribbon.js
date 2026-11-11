@@ -639,7 +639,7 @@ ribbonCloud.style.pointerEvents = 'none';
 svg.append(ribbonCloud);
 const gridCrosses = document.createElementNS(svg.namespaceURI, 'path');
 gridCrosses.setAttribute('fill', 'none');
-gridCrosses.setAttribute('stroke', '#1935ec');
+gridCrosses.setAttribute('stroke', '#1939ff');
 gridCrosses.setAttribute('stroke-linecap', 'round');
 gridCrosses.setAttribute('vector-effect', 'non-scaling-stroke');
 ribbonCloud.after(gridCrosses);
@@ -823,8 +823,8 @@ if (window.AudioContext && soundToggle) {
     soundEnabled = !soundEnabled;
     soundToggle.setAttribute('aria-pressed', String(soundEnabled));
     soundToggle.title = soundEnabled ? 'Turn sound off' : 'Turn sound on';
-    soundToggle.querySelector('use').setAttribute('href',
-      soundEnabled ? '#speaker' : '#speaker-muted');
+    soundIconUrl.hash = soundEnabled ? 'speaker' : 'speaker-muted';
+    soundIcon.setAttribute('href', soundIconUrl.href);
     if (soundEnabled) resumeAudio().catch(() => {});
     else {
       if (audioOutput) audioOutput.gain.value = 0;
@@ -862,6 +862,8 @@ if (workIntro) {
   const transitionDuration = 3500;
   let previousScroll = window.scrollY;
   let transitionFrame = 0;
+  const soundIcon = soundToggle.querySelector('use');
+  const soundIconUrl = new URL(soundIcon.getAttribute('href'), document.baseURI);
   const scrollCue = document.querySelector('.scroll-for-more');
   const returnLink = document.querySelector('.return-to-top');
 
@@ -1051,7 +1053,7 @@ if (workPanels?.length) {
           const y = row + offsetY * (1 - ease) + (!vertical || toNode ? dy * ease : 0)
             + (gridMotion === 'wave' ? -drift * .22 : Math.sin(turn) * drift * .8);
           const gray = clamp((local - .25) / .6);
-          context.fillStyle = 'rgb(' + [25, 53, 236].map(channel =>
+          context.fillStyle = 'rgb(' + [25, 57, 255].map(channel =>
             Math.round(channel + (119 - channel) * gray)).join(' ') + ')';
           const heroFade = clamp((gridStart - row) / (viewport * .28));
           const fadeAbove = row < gridStart ? heroFade + (1 - heroFade) * ease : ease;

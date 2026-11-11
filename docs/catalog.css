@@ -13,15 +13,13 @@
 
 .back-to-top[hidden] { display: none; }
 
-.scroll-for-more {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.back-to-top.scroll-for-more {
+  display: inline-flex;
   width: auto;
   padding-inline: 11px;
-  font: 12px/1.4 var(--mono);
-  text-decoration: none;
 }
+
+.back-to-top.scroll-for-more:hover { background: white; }
 
 @media (prefers-reduced-motion: no-preference) {
   .scroll-for-more svg { animation: scroll-cue-float 1.9s ease-in-out infinite; }
@@ -124,7 +122,7 @@
 
 @media (hover: hover) and (pointer: fine) {
   .catalog .project-card a:hover {
-    cursor: url("./assets/project-cursor.svg") 46 23, pointer;
+    cursor: url("./assets/project-cursor.svg?v=2") 46 23, pointer;
   }
 }
 .catalog .project-card a:focus-visible { outline-offset: -3px; z-index: 2; }

@@ -175,7 +175,7 @@
 
 .cover-grid {
   color: #fff;
-  background: #1935ec;
+  background: #1939ff;
 }
 
 .cover-grid .cover-composition {
@@ -191,7 +191,7 @@
 .cover-sequence i { inset: 14% 18% 39% 49%; border-radius: 50%; }
 .cover-sequence i:nth-child(2) { transform: translateX(-40%); }
 .cover-sequence i:nth-child(3) { transform: translateX(40%); }
-.cover-steps i { inset: 12% 16% 61% 52%; background: #1935ec1c; }
+.cover-steps i { inset: 12% 16% 61% 52%; background: #1939ff1c; }
 .cover-steps i:nth-child(2) { transform: translate(-25%, 60%); }
 .cover-steps i:nth-child(3) { transform: translate(-50%, 120%); }
 .cover-query i { inset: 26% 14% 56% 14%; border-radius: 999px; }

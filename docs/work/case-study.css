@@ -3,17 +3,8 @@
 .work-case-page > .hero-menu { background: white; }
 
 .hero-menu .case-back {
-  position: absolute;
   inset-inline-start: clamp(12px, 3vw, 40px);
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 44px;
-  color: inherit;
-  text-decoration: none;
 }
-
-.hero-menu .case-back:hover { text-decoration: underline; }
 
 .work-case-page > .portfolio-footer {
   --module-size: 12.5cqw;

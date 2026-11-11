@@ -62,7 +62,7 @@
 .hero-menu[data-menu="3"] .chapter-number{display:none}
 .hero-menu[data-menu="3"] nav a::before{
   content:"";grid-column:1/-1;aspect-ratio:1;
-  background:radial-gradient(circle,#1935ec 1px,transparent 1.5px) 0 0/12px 12px,#f8f8f8;
+  background:radial-gradient(circle,#1939ff 1px,transparent 1.5px) 0 0/12px 12px,#f8f8f8;
 }
 .hero-menu[data-menu="3"] nav a:nth-child(2)::before{
   background:linear-gradient(90deg,#aaa 1px,transparent 1px),linear-gradient(#aaa 1px,transparent 1px),#fff;
