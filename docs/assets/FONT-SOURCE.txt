@@ -1,0 +1,7 @@
+Switzer, designed by Indian Type Foundry.
+Light (300) and Regular (400), unmodified WOFF2 files from the official Fontshare API.
+Font family: https://www.fontshare.com/?q=Switzer
+Fontshare licenses: https://www.fontshare.com/licenses
+Fontshare information: https://www.fontshare.com/about
+
+These files are self-hosted for this local reading overview.
