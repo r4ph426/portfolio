@@ -999,10 +999,11 @@ if (workPanels?.length) {
         workIndex.style.setProperty('--grid-settle', reduced.matches ? 1 : smoothRange(progress, .83, 1));
       }
       let contentReveal = 0;
+      const aboutLinked = location.hash === '#about' || location.hash === '#profile';
       for (const panel of workPanels) {
         const panelTop = panel.getBoundingClientRect().top - (parseFloat(panel.style.translate.split(' ')[1]) || 0);
         const inView = smoothRange(viewport - panelTop, viewport * .14, viewport * .36);
-        const reveal = reduced.matches ? 1 : inView * smoothRange(progress, .85, 1);
+        const reveal = reduced.matches || aboutLinked ? 1 : inView * smoothRange(progress, .85, 1);
         contentReveal = Math.max(contentReveal, reveal);
         panel.style.translate = '0 ' + (1 - reveal) * 48 + 'px';
         panel.style.opacity = String(reveal);
@@ -1124,6 +1125,7 @@ if (workPanels?.length) {
       }
     }
     window.addEventListener('scroll', scheduleWorkTransition, {passive: true});
+    window.addEventListener('hashchange', scheduleWorkTransition);
     new ResizeObserver(scheduleWorkTransition).observe(workIndex);
     reduced.addEventListener('change', scheduleWorkTransition);
     nativeScroll.addEventListener('change', updateWorkMotionMode);

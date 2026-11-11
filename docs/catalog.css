@@ -35,7 +35,7 @@
 }
 
 .work-index > .catalog {
-  padding: 0 0 var(--module-size);
+  padding: var(--module-size) 0;
 }
 
 .catalog .project-group {
@@ -47,9 +47,10 @@
   min-height: var(--module-size);
   display: flex;
   align-items: start;
-  width: calc(2 * var(--module-size));
+  width: var(--module-size);
   padding: var(--panel-padding);
-  margin: 0 0 0 var(--grid-offset);
+  margin: 0;
+  margin-inline-start: calc(var(--grid-offset) + 2 * var(--module-size));
   background: white;
   scroll-margin-top: 64px;
 }
@@ -179,7 +180,7 @@
 @media (min-width: 1600px) {
   .work-intro .about-panel { grid-column: 8 / -2; }
   .catalog .project-group > h2 {
-    margin-inline-start: calc(var(--grid-offset) + 4 * var(--module-size));
+    margin-inline-start: calc(var(--grid-offset) + 6 * var(--module-size));
   }
   #wechselspiel { --columns: 1 / 9; --rows: 1 / 6; }
   #design-daily { --columns: 10 / 18; --rows: 3 / 6; }
@@ -210,6 +211,7 @@
 
   .catalog .project-group > h2 {
     width: calc(4 * var(--module-size));
+    margin-inline-start: var(--grid-offset);
     padding-block: 0;
     align-items: center;
   }
